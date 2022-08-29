@@ -386,7 +386,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               <li className="list-inline-item">
                 <button
                   className="text-muted btn btn-sm btn-link p-0"
-                  data-tippy-content={md.render(body)}
+                  data-tippy-content={postContentToHtml(body).__html}
                   data-tippy-allowHtml={true}
                   onClick={linkEvent(this, this.handleShowBody)}
                 >
