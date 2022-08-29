@@ -44,6 +44,7 @@ import { httpBase } from "./env";
 import { i18n, languages } from "./i18next";
 import { DataType, IsoData } from "./interfaces";
 import { UserService, WebSocketService } from "./services";
+import edjsHtml from 'editorjs-html';
 
 var Tribute: any;
 if (isBrowser()) {
@@ -75,6 +76,8 @@ export const mentionDropdownFetchLimit = 10;
 export const commentTreeMaxDepth = 8;
 
 export const relTags = "noopener nofollow";
+
+const editorJsMarker = '__editor_type:editorjs:';
 
 const DEFAULT_ALPHABET =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -159,6 +162,32 @@ export function hotRank(score: number, timeStr: string): number {
   // console.log(`Comment: ${comment.content}\nRank: ${rank}\nScore: ${comment.score}\nHours: ${hoursElapsed}`);
 
   return rank;
+}
+
+export function hasEditorJsMarker(text: string) {
+  return text.startsWith(editorJsMarker);
+}
+
+export function removeEditorJsMarker(text: string) {
+  return text.substring(editorJsMarker.length)
+}
+
+export function postContentToHtml(text: string) {
+  if (hasEditorJsMarker(text)) {
+    return editorJsToHtml(removeEditorJsMarker(text));
+  }
+
+  return mdToHtml(text);
+}
+
+export function editorJsToHtml(text: string) {
+  const edjsParser = edjsHtml({
+    delimiter: (block) => '<div class="delimiter">***</div>',
+  });
+
+  const html = edjsParser.parse(JSON.parse(text));
+
+  return {__html: html.join('')};
 }
 
 export function mdToHtml(text: string) {

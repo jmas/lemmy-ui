@@ -74,6 +74,10 @@
 .md-div h5 {
   font-size: 1.2rem;
 }
+.md-div .delimiter {
+  text-align: center;
+  font-size: 2rem;
+}
 
 .md-div table {
   border-collapse: collapse;
@@ -385,4 +389,37 @@ br.big {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+
+/*editor js*/
+
+.ce-block--selected .ce-block__content, .ce-inline-toolbar,
+.codex-editor--narrow .ce-toolbox,
+.ce-conversion-toolbar, .ce-settings, .ce-settings__button,
+.ce-toolbar__settings-btn, .cdx-button,
+.ce-popover {
+  background: var(--secondary);
+  border-color: var(--gray);
+  color: inherit;
+}
+
+.ce-popover__item-icon {
+  background: var(--secondary);
+}
+
+.ce-toolbar__plus:hover {}
+
+
+.ce-inline-tool, .ce-conversion-toolbar__label, .ce-toolbox__button, .cdx-settings-button, .ce-toolbar__plus {
+  color: inherit;
+}
+
+::selection {
+  background: #439A86;
+}
+
+.cdx-settings-button:hover, .ce-settings__button:hover, .ce-toolbox__button--active, .ce-toolbox__button:hover,
+.cdx-button:hover, .ce-inline-toolbar__dropdown:hover, .ce-inline-tool:hover {
+  background-color: #439A86;
+  color: inherit;
 }

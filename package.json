@@ -17,11 +17,13 @@
   },
   "repository": "https://github.com/LemmyNet/lemmy-ui",
   "dependencies": {
+    "@editorjs/editorjs": "^2.25.0",
     "@typescript-eslint/parser": "^5.31.0",
     "autosize": "^5.0.1",
     "check-password-strength": "^2.0.7",
     "choices.js": "^10.1.0",
     "classnames": "^2.3.1",
+    "editorjs-html": "^3.4.2",
     "emoji-short-name": "^2.0.0",
     "express": "~4.18.1",
     "i18next": "^21.8.14",

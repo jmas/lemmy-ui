@@ -235,6 +235,15 @@ server.get("/*", async (req, res) => {
 
              <div id='root'>${root}</div>
              <script defer src='/static/js/client.js'></script>
+            <script src="/static/assets/js/editor.js"></script>
+            <script src="/static/assets/js/editorjs/code.js"></script>
+            <script src="/static/assets/js/editorjs/delimiter.js"></script>
+            <script src="/static/assets/js/editorjs/embed.js"></script>
+            <script src="/static/assets/js/editorjs/header.js"></script>
+            <script src="/static/assets/js/editorjs/link.js"></script>
+            <script src="/static/assets/js/editorjs/list.js"></script>
+            <script src="/static/assets/js/editorjs/quote.js"></script>
+            <script src="/static/assets/js/editorjs/table.js"></script>
            </body>
          </html>
 `);
