@@ -52,7 +52,6 @@ import {
 } from "../../utils";
 import { Icon, Spinner } from "../common/icon";
 import { PostListings } from "./post-listings";
-import { EditorJsTextArea } from "../common/editorjs-textarea";
 import { MarkdownTextArea } from "../common/markdown-textarea";
 
 var Choices: any;
@@ -166,6 +165,36 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
     this.subscription.unsubscribe();
     /* this.choices && this.choices.destroy(); */
     window.onbeforeunload = null;
+  }
+
+  renderEditor() {
+    if (this.state.postForm.body.isNone() || hasEditorJsMarker(toUndefined(this.state.postForm.body))) {
+      if (!isBrowser()) {
+        return null;
+      }
+
+      const {EditorJsTextArea} = require('../common/editorjs-textarea');
+
+      return <EditorJsTextArea
+          initialContent={toOption(this.state.postForm.body.match({
+            some: content => JSON.parse(removeEditorJsMarker(content)),
+            none: {blocks: []}
+          }))}
+          onContentChange={this.handlePostBodyChange}
+          placeholder={None}
+          buttonTitle={None}
+          maxLength={None}
+      />;
+    }
+
+    return <MarkdownTextArea
+        initialContent={this.state.postForm.body}
+        onContentChange={this.handlePostBodyChange}
+        placeholder={None}
+        buttonTitle={None}
+        maxLength={None}
+    />;
+
   }
 
   render() {
@@ -331,25 +360,7 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">{i18n.t("body")}</label>
             <div class="col-sm-10">
-              {this.state.postForm.body.isNone() || hasEditorJsMarker(toUndefined(this.state.postForm.body))
-                  ? <EditorJsTextArea
-                      initialContent={toOption(this.state.postForm.body.match({
-                        some: content => JSON.parse(removeEditorJsMarker(content)),
-                        none: {blocks: []}
-                      }))}
-                      onContentChange={this.handlePostBodyChange}
-                      placeholder={None}
-                      buttonTitle={None}
-                      maxLength={None}
-                  />
-                  : <MarkdownTextArea
-                      initialContent={this.state.postForm.body}
-                      onContentChange={this.handlePostBodyChange}
-                      placeholder={None}
-                      buttonTitle={None}
-                      maxLength={None}
-                  />
-              }
+              {this.renderEditor()}
             </div>
           </div>
           {this.props.post_view.isNone() && (

@@ -15,7 +15,15 @@ import {
     toast,
 } from "../../utils";
 import {Icon, Spinner} from "./icon";
-import {OutputData} from "@editorjs/editorjs";
+import EditorJS, {OutputData} from "@editorjs/editorjs";
+import Code from "@editorjs/code";
+import Delimiter from "@editorjs/delimiter";
+import Embed from "@editorjs/embed";
+import Header from "@editorjs/header";
+import Link from "@editorjs/link";
+import List from "@editorjs/list";
+import Quote from "@editorjs/quote";
+import Table from "@editorjs/table";
 
 interface EditorJsTextAreaProps {
     initialContent: Option<OutputData>;
@@ -37,7 +45,6 @@ interface EditorJsTextAreaProps {
 
 interface EditorJsTextAreaState {
     content: Option<OutputData>;
-    blocks: OutputData,
     previewMode: boolean;
     loading: boolean;
     imageLoading: boolean;
@@ -69,32 +76,21 @@ export class EditorJsTextArea extends Component<EditorJsTextAreaProps,
     componentDidMount() {
         let textarea: any = document.getElementById(this.id);
         if (textarea && isBrowser()) {
-            const editorJs = new window.EditorJS({
+            const editorJs = new EditorJS({
                 data: this.state.content.match({
                     some: content => content,
                     none: ({blocks: []}),
                 }),
                 autofocus: true,
                 tools: {
-                    code: window.CodeTool,
-                    delimiter: window.Delimiter,
-                    embed: {
-                        class: window.Embed,
-                        config: {
-                            services: {
-                                youtube: true,
-                                facebook: true,
-                                instagram: true,
-                                twitter: true,
-                            }
-                        },
-                        inlineToolbar: true
-                    },
-                    header: window.Header,
-                    link: window.LinkTool,
-                    list: window.List,
-                    quote: window.Quote,
-                    table: window.Table,
+                    code: Code,
+                    delimiter: Delimiter,
+                    embed: Embed,
+                    header: Header,
+                    link: Link,
+                    list: List,
+                    quote: Quote,
+                    table: Table,
                 },
                 holder: this.id,
                 onReady: () => {
