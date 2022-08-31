@@ -91,7 +91,7 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
           />
         ) : (
           <div class="alert alert-warning" role="alert">
-            <Icon icon="alert-triangle" classes="icon-inline mr-2" />
+            <Icon icon="alert-triangle" classes="icon-inline me-2" />
             <T i18nKey="must_login" class="d-inline">
               #
               <Link className="alert-link" to="/login">

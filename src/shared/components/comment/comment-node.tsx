@@ -209,7 +209,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
     return (
       <div
         className={`comment ${
-          this.props.node.depth && !this.props.noIndent ? "ml-1" : ""
+          this.props.node.depth && !this.props.noIndent ? "ms-1" : ""
         }`}
       >
         <div
@@ -227,37 +227,37 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
           }
         >
           <div
-            class={`${!this.props.noIndent && this.props.node.depth && "ml-2"}`}
+            class={`${!this.props.noIndent && this.props.node.depth && "ms-2"}`}
           >
             <div class="d-flex flex-wrap align-items-center text-muted small">
-              <span class="mr-2">
+              <span class="me-2">
                 <PersonListing person={cv.creator} />
               </span>
               {cv.comment.distinguished && (
-                <Icon icon="shield" inline classes={`text-danger mr-2`} />
+                <Icon icon="shield" inline classes={`text-danger me-2`} />
               )}
               {isMod_ && (
-                <div className="badge badge-light d-none d-sm-inline mr-2">
+                <div className="badge rounded-pill text-bg-light d-none d-sm-inline me-2">
                   {i18n.t("mod")}
                 </div>
               )}
               {isAdmin_ && (
-                <div className="badge badge-light d-none d-sm-inline mr-2">
+                <div className="badge rounded-pill text-bg-light d-none d-sm-inline me-2">
                   {i18n.t("admin")}
                 </div>
               )}
               {this.isPostCreator && (
-                <div className="badge badge-light d-none d-sm-inline mr-2">
+                <div className="badge rounded-pill text-bg-light d-none d-sm-inline me-2">
                   {i18n.t("creator")}
                 </div>
               )}
               {cv.creator.bot_account && (
-                <div className="badge badge-light d-none d-sm-inline mr-2">
+                <div className="badge rounded-pill text-bg-light d-none d-sm-inline me-2">
                   {i18n.t("bot_account").toLowerCase()}
                 </div>
               )}
               {(cv.creator_banned_from_community || isBanned(cv.creator)) && (
-                <div className="badge badge-danger mr-2">
+                <div className="badge badge-danger me-2">
                   {i18n.t("banned")}
                 </div>
               )}
@@ -266,7 +266,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                   <span class="mx-1">{i18n.t("to")}</span>
                   <CommunityLink community={cv.community} />
                   <span class="mx-2">•</span>
-                  <Link className="mr-2" to={`/post/${cv.post.id}`}>
+                  <Link className="me-2" to={`/post/${cv.post.id}`}>
                     {cv.post.name}
                   </Link>
                 </>
@@ -285,7 +285,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
               </button>
               {this.linkBtn(true)}
               {/* This is an expanding spacer for mobile */}
-              <div className="mr-lg-5 flex-grow-1 flex-lg-grow-0 unselectable pointer mx-2"></div>
+              <div className="me-lg-5 flex-grow-1 flex-lg-grow-0 unselectable pointer mx-2"></div>
               {showScores() && (
                 <>
                   <a
@@ -294,7 +294,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                     data-tippy-content={this.pointsTippy}
                   >
                     <span
-                      class="mr-1 font-weight-bold"
+                      class="me-1 font-weight-bold"
                       aria-label={i18n.t("number_of_points", {
                         count: this.state.score,
                         formattedCount: this.state.score,
@@ -303,7 +303,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                       {numToSI(this.state.score)}
                     </span>
                   </a>
-                  <span className="mr-1">•</span>
+                  <span className="me-1">•</span>
                 </>
               )}
               <span>
@@ -329,7 +329,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                   <pre>{this.commentUnlessRemoved}</pre>
                 ) : (
                   <div
-                    className="md-div"
+                    className="uj-md-text"
                     dangerouslySetInnerHTML={mdToHtml(
                       this.commentUnlessRemoved
                     )}
@@ -380,7 +380,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                           <Icon icon="arrow-up1" classes="icon-inline" />
                           {showScores() &&
                             this.state.upvotes !== this.state.score && (
-                              <span class="ml-1">
+                              <span class="ms-1">
                                 {numToSI(this.state.upvotes)}
                               </span>
                             )}
@@ -399,7 +399,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                             <Icon icon="arrow-down1" classes="icon-inline" />
                             {showScores() &&
                               this.state.upvotes !== this.state.score && (
-                                <span class="ml-1">
+                                <span class="ms-1">
                                   {numToSI(this.state.downvotes)}
                                 </span>
                               )}
@@ -827,7 +827,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
         </div>
         {showMoreChildren && (
           <div
-            className={`details ml-1 comment-node py-2 ${
+            className={`details ms-1 comment-node py-2 ${
               !this.props.noBorder ? "border-top border-light" : ""
             }`}
             style={`border-left: 2px ${moreRepliesBorderColor} solid !important`}
@@ -851,7 +851,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
             onSubmit={linkEvent(this, this.handleModRemoveSubmit)}
           >
             <label
-              class="sr-only"
+              class="visually-hidden"
               htmlFor={`mod-remove-reason-${cv.comment.id}`}
             >
               {i18n.t("reason")}
@@ -859,7 +859,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
             <input
               type="text"
               id={`mod-remove-reason-${cv.comment.id}`}
-              class="form-control mr-2"
+              class="form-control me-2"
               placeholder={i18n.t("reason")}
               value={toUndefined(this.state.removeReason)}
               onInput={linkEvent(this, this.handleModRemoveReasonChange)}
@@ -878,14 +878,17 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
             class="form-inline"
             onSubmit={linkEvent(this, this.handleReportSubmit)}
           >
-            <label class="sr-only" htmlFor={`report-reason-${cv.comment.id}`}>
+            <label
+              class="visually-hidden"
+              htmlFor={`report-reason-${cv.comment.id}`}
+            >
               {i18n.t("reason")}
             </label>
             <input
               type="text"
               required
               id={`report-reason-${cv.comment.id}`}
-              class="form-control mr-2"
+              class="form-control me-2"
               placeholder={i18n.t("reason")}
               value={this.state.reportReason}
               onInput={linkEvent(this, this.handleReportReasonChange)}
@@ -911,7 +914,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
               <input
                 type="text"
                 id={`mod-ban-reason-${cv.comment.id}`}
-                class="form-control mr-2"
+                class="form-control me-2"
                 placeholder={i18n.t("reason")}
                 value={toUndefined(this.state.banReason)}
                 onInput={linkEvent(this, this.handleModBanReasonChange)}
@@ -925,7 +928,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
               <input
                 type="number"
                 id={`mod-ban-expires-${cv.comment.id}`}
-                class="form-control mr-2"
+                class="form-control me-2"
                 placeholder={i18n.t("number_of_days")}
                 value={toUndefined(this.state.banExpireDays)}
                 onInput={linkEvent(this, this.handleModBanExpireDaysChange)}
@@ -952,7 +955,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
             {/* TODO hold off on expires until later */}
             {/* <div class="form-group row"> */}
             {/*   <label class="col-form-label">Expires</label> */}
-            {/*   <input type="date" class="form-control mr-2" placeholder={i18n.t('expires')} value={this.state.banExpires} onInput={linkEvent(this, this.handleModBanExpiresChange)} /> */}
+            {/*   <input type="date" class="form-control me-2" placeholder={i18n.t('expires')} value={this.state.banExpires} onInput={linkEvent(this, this.handleModBanExpiresChange)} /> */}
             {/* </div> */}
             <div class="form-group row">
               <button
@@ -969,7 +972,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
         {this.state.showPurgeDialog && (
           <form onSubmit={linkEvent(this, this.handlePurgeSubmit)}>
             <PurgeWarning />
-            <label class="sr-only" htmlFor="purge-reason">
+            <label class="visually-hidden" htmlFor="purge-reason">
               {i18n.t("reason")}
             </label>
             <input

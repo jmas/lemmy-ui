@@ -1,0 +1,15 @@
+.uj-layout {
+  &-container {
+    display: grid;
+    gap: 1em;
+    @include media-breakpoint-up(md) {
+      grid-template-columns: 180px 1fr 270px;
+    }
+  }
+
+  &-posts {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

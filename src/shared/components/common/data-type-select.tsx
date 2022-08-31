@@ -32,7 +32,7 @@ export class DataTypeSelect extends Component<
 
   render() {
     return (
-      <div class="btn-group btn-group-toggle flex-wrap mb-2">
+      <div class="btn-group btn-group-toggle flex-wrap">
         <label
           className={`pointer btn btn-outline-secondary 
             ${this.state.type_ == DataType.Post && "active"}
@@ -43,6 +43,7 @@ export class DataTypeSelect extends Component<
             value={DataType.Post}
             checked={this.state.type_ == DataType.Post}
             onChange={linkEvent(this, this.handleTypeChange)}
+            class="visually-hidden"
           />
           {i18n.t("posts")}
         </label>
@@ -56,6 +57,7 @@ export class DataTypeSelect extends Component<
             value={DataType.Comment}
             checked={this.state.type_ == DataType.Comment}
             onChange={linkEvent(this, this.handleTypeChange)}
+            class="visually-hidden"
           />
           {i18n.t("comments")}
         </label>

@@ -125,8 +125,8 @@ export class MarkdownTextArea extends Component<
           }
           message={i18n.t("block_leaving")}
         />
-        <div class="form-group row">
-          <div className={`col-sm-12`}>
+        <div class="mb-1">
+          <div>
             <textarea
               id={this.id}
               className={`form-control ${this.state.previewMode && "d-none"}`}
@@ -143,14 +143,14 @@ export class MarkdownTextArea extends Component<
               this.state.content.match({
                 some: content => (
                   <div
-                    className="card border-secondary card-body md-div"
+                    className="card card-body uj-md-text"
                     dangerouslySetInnerHTML={mdToHtml(content)}
                   />
                 ),
                 none: <></>,
               })}
           </div>
-          <label class="sr-only" htmlFor={this.id}>
+          <label class="visually-hidden" htmlFor={this.id}>
             {i18n.t("body")}
           </label>
         </div>
@@ -160,7 +160,7 @@ export class MarkdownTextArea extends Component<
               some: buttonTitle => (
                 <button
                   type="submit"
-                  class="btn btn-sm btn-secondary mr-2"
+                  class="btn btn-sm btn-secondary me-2"
                   disabled={this.props.disabled || this.state.loading}
                 >
                   {this.state.loading ? (
@@ -175,7 +175,7 @@ export class MarkdownTextArea extends Component<
             {this.props.replyType && (
               <button
                 type="button"
-                class="btn btn-sm btn-secondary mr-2"
+                class="btn btn-sm btn-secondary me-2"
                 onClick={linkEvent(this, this.handleReplyCancel)}
               >
                 {i18n.t("cancel")}
@@ -183,7 +183,7 @@ export class MarkdownTextArea extends Component<
             )}
             {this.state.content.isSome() && (
               <button
-                className={`btn btn-sm btn-secondary mr-2 ${
+                className={`btn btn-sm btn-secondary me-2 ${
                   this.state.previewMode && "active"
                 }`}
                 onClick={linkEvent(this, this.handlePreviewToggle)}
@@ -192,7 +192,7 @@ export class MarkdownTextArea extends Component<
               </button>
             )}
             {/* A flex expander */}
-            <div class="flex-grow-1"></div>
+            {/* <div class="flex-grow-1"></div> */}
             <button
               class="btn btn-sm text-muted"
               data-tippy-content={i18n.t("bold")}

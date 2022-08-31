@@ -115,114 +115,116 @@ export class Communities extends Component<any, CommunitiesState> {
   render() {
     return (
       <div class="container">
-        <HtmlTags
-          title={this.documentTitle}
-          path={this.context.router.route.match.url}
-          description={None}
-          image={None}
-        />
-        {this.state.loading ? (
-          <h5>
-            <Spinner large />
-          </h5>
-        ) : (
-          <div>
-            <div class="row">
-              <div class="col-md-6">
-                <h4>{i18n.t("list_of_communities")}</h4>
-                <span class="mb-2">
-                  <ListingTypeSelect
-                    type_={this.state.listingType}
-                    showLocal={showLocal(this.isoData)}
-                    showSubscribed
-                    onChange={this.handleListingTypeChange}
-                  />
-                </span>
+        <div class="card p-5">
+          <HtmlTags
+            title={this.documentTitle}
+            path={this.context.router.route.match.url}
+            description={None}
+            image={None}
+          />
+          {this.state.loading ? (
+            <h5>
+              <Spinner large />
+            </h5>
+          ) : (
+            <div>
+              <div class="row">
+                <div class="col-md-6">
+                  <h4>{i18n.t("list_of_communities")}</h4>
+                  <span class="mb-2">
+                    <ListingTypeSelect
+                      type_={this.state.listingType}
+                      showLocal={showLocal(this.isoData)}
+                      showSubscribed
+                      onChange={this.handleListingTypeChange}
+                    />
+                  </span>
+                </div>
+                <div class="col-md-6">
+                  <div class="float-md-right">{this.searchForm()}</div>
+                </div>
               </div>
-              <div class="col-md-6">
-                <div class="float-md-right">{this.searchForm()}</div>
-              </div>
-            </div>
 
-            <div class="table-responsive">
-              <table id="community_table" class="table table-sm table-hover">
-                <thead class="pointer">
-                  <tr>
-                    <th>{i18n.t("name")}</th>
-                    <th class="text-right">{i18n.t("subscribers")}</th>
-                    <th class="text-right">
-                      {i18n.t("users")} / {i18n.t("month")}
-                    </th>
-                    <th class="text-right d-none d-lg-table-cell">
-                      {i18n.t("posts")}
-                    </th>
-                    <th class="text-right d-none d-lg-table-cell">
-                      {i18n.t("comments")}
-                    </th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.listCommunitiesResponse
-                    .map(l => l.communities)
-                    .unwrapOr([])
-                    .map(cv => (
-                      <tr>
-                        <td>
-                          <CommunityLink community={cv.community} />
-                        </td>
-                        <td class="text-right">
-                          {numToSI(cv.counts.subscribers)}
-                        </td>
-                        <td class="text-right">
-                          {numToSI(cv.counts.users_active_month)}
-                        </td>
-                        <td class="text-right d-none d-lg-table-cell">
-                          {numToSI(cv.counts.posts)}
-                        </td>
-                        <td class="text-right d-none d-lg-table-cell">
-                          {numToSI(cv.counts.comments)}
-                        </td>
-                        <td class="text-right">
-                          {cv.subscribed == SubscribedType.Subscribed && (
-                            <button
-                              class="btn btn-link d-inline-block"
-                              onClick={linkEvent(
-                                cv.community.id,
-                                this.handleUnsubscribe
-                              )}
-                            >
-                              {i18n.t("unsubscribe")}
-                            </button>
-                          )}
-                          {cv.subscribed == SubscribedType.NotSubscribed && (
-                            <button
-                              class="btn btn-link d-inline-block"
-                              onClick={linkEvent(
-                                cv.community.id,
-                                this.handleSubscribe
-                              )}
-                            >
-                              {i18n.t("subscribe")}
-                            </button>
-                          )}
-                          {cv.subscribed == SubscribedType.Pending && (
-                            <div class="text-warning d-inline-block">
-                              {i18n.t("subscribe_pending")}
-                            </div>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table id="community_table" class="table table-sm table-hover">
+                  <thead class="pointer">
+                    <tr>
+                      <th>{i18n.t("name")}</th>
+                      <th class="text-right">{i18n.t("subscribers")}</th>
+                      <th class="text-right">
+                        {i18n.t("users")} / {i18n.t("month")}
+                      </th>
+                      <th class="text-right d-none d-lg-table-cell">
+                        {i18n.t("posts")}
+                      </th>
+                      <th class="text-right d-none d-lg-table-cell">
+                        {i18n.t("comments")}
+                      </th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.state.listCommunitiesResponse
+                      .map(l => l.communities)
+                      .unwrapOr([])
+                      .map(cv => (
+                        <tr>
+                          <td>
+                            <CommunityLink community={cv.community} />
+                          </td>
+                          <td class="text-right">
+                            {numToSI(cv.counts.subscribers)}
+                          </td>
+                          <td class="text-right">
+                            {numToSI(cv.counts.users_active_month)}
+                          </td>
+                          <td class="text-right d-none d-lg-table-cell">
+                            {numToSI(cv.counts.posts)}
+                          </td>
+                          <td class="text-right d-none d-lg-table-cell">
+                            {numToSI(cv.counts.comments)}
+                          </td>
+                          <td class="text-right">
+                            {cv.subscribed == SubscribedType.Subscribed && (
+                              <button
+                                class="btn btn-link d-inline-block"
+                                onClick={linkEvent(
+                                  cv.community.id,
+                                  this.handleUnsubscribe
+                                )}
+                              >
+                                {i18n.t("unsubscribe")}
+                              </button>
+                            )}
+                            {cv.subscribed == SubscribedType.NotSubscribed && (
+                              <button
+                                class="btn btn-link d-inline-block"
+                                onClick={linkEvent(
+                                  cv.community.id,
+                                  this.handleSubscribe
+                                )}
+                              >
+                                {i18n.t("subscribe")}
+                              </button>
+                            )}
+                            {cv.subscribed == SubscribedType.Pending && (
+                              <div class="text-warning d-inline-block">
+                                {i18n.t("subscribe_pending")}
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+              <Paginator
+                page={this.state.page}
+                onChange={this.handlePageChange}
+              />
             </div>
-            <Paginator
-              page={this.state.page}
-              onChange={this.handlePageChange}
-            />
-          </div>
-        )}
+          )}
+        </div>
       </div>
     );
   }
@@ -236,17 +238,17 @@ export class Communities extends Component<any, CommunitiesState> {
         <input
           type="text"
           id="communities-search"
-          class="form-control mr-2 mb-2"
+          class="form-control me-2 mb-2"
           value={this.state.searchText}
           placeholder={`${i18n.t("search")}...`}
           onInput={linkEvent(this, this.handleSearchChange)}
           required
           minLength={3}
         />
-        <label class="sr-only" htmlFor="communities-search">
+        <label class="visually-hidden" htmlFor="communities-search">
           {i18n.t("search")}
         </label>
-        <button type="submit" class="btn btn-secondary mr-2 mb-2">
+        <button type="submit" class="btn btn-secondary me-2 mb-2">
           <span>{i18n.t("search")}</span>
         </button>
       </form>

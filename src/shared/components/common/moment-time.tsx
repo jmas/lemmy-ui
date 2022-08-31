@@ -36,7 +36,7 @@ export class MomentTime extends Component<MomentTimeProps, any> {
           data-tippy-content={this.createdAndModifiedTimes()}
           className="font-italics pointer unselectable"
         >
-          <Icon icon="edit-2" classes="icon-inline mr-1" />
+          <Icon icon="edit-2" classes="icon-inline me-1" />
           {moment.utc(this.props.updated.unwrap()).fromNow(!this.props.showAgo)}
         </span>
       );

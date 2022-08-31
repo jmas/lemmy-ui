@@ -91,7 +91,10 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
   sidebar() {
     return (
       <div>
-        <div class="card border-secondary mb-3">
+        <div
+          class="card mb-3"
+          style={{ "--bs-card-bg": "rgba(255,255,255,0.25)" }}
+        >
           <div class="card-body">
             {this.communityTitle()}
             {this.adminButtons()}
@@ -99,7 +102,10 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
             {this.canPost && this.createPost()}
           </div>
         </div>
-        <div class="card border-secondary mb-3">
+        <div
+          class="card mb-3"
+          style={{ "--bs-card-bg": "rgba(255,255,255,0.25)" }}
+        >
           <div class="card-body">
             {this.description()}
             {this.badges()}
@@ -119,36 +125,36 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
           {this.props.showIcon && (
             <BannerIconHeader icon={community.icon} banner={community.banner} />
           )}
-          <span class="mr-2">{community.title}</span>
+          <span class="me-2">{community.title}</span>
           {subscribed == SubscribedType.Subscribed && (
             <button
-              class="btn btn-secondary btn-sm mr-2"
+              class="btn btn-secondary btn-sm me-2"
               onClick={linkEvent(this, this.handleUnsubscribe)}
             >
-              <Icon icon="check" classes="icon-inline text-success mr-1" />
+              <Icon icon="check" classes="icon-inline text-success me-1" />
               {i18n.t("joined")}
             </button>
           )}
           {subscribed == SubscribedType.Pending && (
             <button
-              class="btn btn-warning mr-2"
+              class="btn btn-warning me-2"
               onClick={linkEvent(this, this.handleUnsubscribe)}
             >
               {i18n.t("subscribe_pending")}
             </button>
           )}
           {community.removed && (
-            <small className="mr-2 text-muted font-italic">
+            <small className="me-2 text-muted font-italic">
               {i18n.t("removed")}
             </small>
           )}
           {community.deleted && (
-            <small className="mr-2 text-muted font-italic">
+            <small className="me-2 text-muted font-italic">
               {i18n.t("deleted")}
             </small>
           )}
           {community.nsfw && (
-            <small className="mr-2 text-muted font-italic">
+            <small className="me-2 text-muted font-italic">
               {i18n.t("nsfw")}
             </small>
           )}
@@ -169,14 +175,14 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
     let counts = community_view.counts;
     return (
       <ul class="my-1 list-inline">
-        <li className="list-inline-item badge badge-secondary">
+        <li className="list-inline-item badge rounded-pill text-bg-light">
           {i18n.t("number_online", {
             count: this.props.online,
             formattedCount: numToSI(this.props.online),
           })}
         </li>
         <li
-          className="list-inline-item badge badge-secondary pointer"
+          className="list-inline-item badge rounded-pill text-bg-light pointer"
           data-tippy-content={i18n.t("active_users_in_the_last_day", {
             count: counts.users_active_day,
             formattedCount: counts.users_active_day,
@@ -189,7 +195,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
           / {i18n.t("day")}
         </li>
         <li
-          className="list-inline-item badge badge-secondary pointer"
+          className="list-inline-item badge rounded-pill text-bg-light pointer"
           data-tippy-content={i18n.t("active_users_in_the_last_week", {
             count: counts.users_active_week,
             formattedCount: counts.users_active_week,
@@ -202,7 +208,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
           / {i18n.t("week")}
         </li>
         <li
-          className="list-inline-item badge badge-secondary pointer"
+          className="list-inline-item badge rounded-pill text-bg-light pointer"
           data-tippy-content={i18n.t("active_users_in_the_last_month", {
             count: counts.users_active_month,
             formattedCount: counts.users_active_month,
@@ -215,7 +221,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
           / {i18n.t("month")}
         </li>
         <li
-          className="list-inline-item badge badge-secondary pointer"
+          className="list-inline-item badge rounded-pill text-bg-light pointer"
           data-tippy-content={i18n.t("active_users_in_the_last_six_months", {
             count: counts.users_active_half_year,
             formattedCount: counts.users_active_half_year,
@@ -227,19 +233,19 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
           })}{" "}
           / {i18n.t("number_of_months", { count: 6, formattedCount: 6 })}
         </li>
-        <li className="list-inline-item badge badge-secondary">
+        <li className="list-inline-item badge rounded-pill text-bg-light">
           {i18n.t("number_of_subscribers", {
             count: counts.subscribers,
             formattedCount: numToSI(counts.subscribers),
           })}
         </li>
-        <li className="list-inline-item badge badge-secondary">
+        <li className="list-inline-item badge rounded-pill text-bg-light">
           {i18n.t("number_of_posts", {
             count: counts.posts,
             formattedCount: numToSI(counts.posts),
           })}
         </li>
-        <li className="list-inline-item badge badge-secondary">
+        <li className="list-inline-item badge rounded-pill text-bg-light">
           {i18n.t("number_of_comments", {
             count: counts.comments,
             formattedCount: numToSI(counts.comments),
@@ -247,7 +253,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
         </li>
         <li className="list-inline-item">
           <Link
-            className="badge badge-primary"
+            className="badge rounded-pill text-bg-warning"
             to={`/modlog/community/${this.props.community_view.community.id}`}
           >
             {i18n.t("modlog")}
@@ -324,7 +330,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
     let description = this.props.community_view.community.description;
     return description.match({
       some: desc => (
-        <div className="md-div" dangerouslySetInnerHTML={mdToHtml(desc)} />
+        <div className="uj-md-text" dangerouslySetInnerHTML={mdToHtml(desc)} />
       ),
       none: <></>,
     });
@@ -449,7 +455,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
               <input
                 type="text"
                 id="remove-reason"
-                class="form-control mr-2"
+                class="form-control me-2"
                 placeholder={i18n.t("optional")}
                 value={toUndefined(this.state.removeReason)}
                 onInput={linkEvent(this, this.handleModRemoveReasonChange)}
@@ -458,7 +464,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
             {/* TODO hold off on expires for now */}
             {/* <div class="form-group row"> */}
             {/*   <label class="col-form-label">Expires</label> */}
-            {/*   <input type="date" class="form-control mr-2" placeholder={i18n.t('expires')} value={this.state.removeExpires} onInput={linkEvent(this, this.handleModRemoveExpiresChange)} /> */}
+            {/*   <input type="date" class="form-control me-2" placeholder={i18n.t('expires')} value={this.state.removeExpires} onInput={linkEvent(this, this.handleModRemoveExpiresChange)} /> */}
             {/* </div> */}
             <div class="form-group">
               <button type="submit" class="btn btn-secondary">
@@ -473,13 +479,13 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
               <PurgeWarning />
             </div>
             <div class="form-group">
-              <label class="sr-only" htmlFor="purge-reason">
+              <label class="visually-hidden" htmlFor="purge-reason">
                 {i18n.t("reason")}
               </label>
               <input
                 type="text"
                 id="purge-reason"
-                class="form-control mr-2"
+                class="form-control me-2"
                 placeholder={i18n.t("reason")}
                 value={toUndefined(this.state.purgeReason)}
                 onInput={linkEvent(this, this.handlePurgeReasonChange)}

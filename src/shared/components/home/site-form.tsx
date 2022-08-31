@@ -383,7 +383,7 @@ export class SiteForm extends Component<SiteFormProps, SiteFormState> {
           <div class="form-group row">
             <div class="col-12">
               <label
-                class="form-check-label mr-2"
+                class="form-check-label me-2"
                 htmlFor="create-site-default-theme"
               >
                 {i18n.t("theme")}
@@ -392,7 +392,7 @@ export class SiteForm extends Component<SiteFormProps, SiteFormState> {
                 id="create-site-default-theme"
                 value={toUndefined(this.state.siteForm.default_theme)}
                 onChange={linkEvent(this, this.handleSiteDefaultTheme)}
-                class="custom-select w-auto"
+                class="form-select w-auto"
               >
                 <option value="browser">{i18n.t("browser_default")}</option>
                 {this.state.themeList.unwrapOr([]).map(theme => (
@@ -460,11 +460,11 @@ export class SiteForm extends Component<SiteFormProps, SiteFormState> {
               </div>
             </div>
           </div>
-          <div class="form-group row">
+          <div class="form-group row mb-0">
             <div class="col-12">
               <button
                 type="submit"
-                class="btn btn-secondary mr-2"
+                class="btn btn-primary me-2"
                 disabled={this.state.loading}
               >
                 {this.state.loading ? (

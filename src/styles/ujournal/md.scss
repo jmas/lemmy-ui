@@ -1,0 +1,62 @@
+.uj-md {
+  &-text {
+    & > p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    & > p:last-child {
+      margin-bottom: 0px;
+    }
+
+    & img {
+      max-height: 40vh;
+      max-width: 100%;
+      height: auto;
+    }
+
+    & h1 {
+      font-size: 2rem;
+    }
+
+    & h2 {
+      font-size: 1.8rem;
+    }
+
+    & h3 {
+      font-size: 1.6rem;
+    }
+
+    & h4 {
+      font-size: 1.4rem;
+    }
+
+    & h5 {
+      font-size: 1.2rem;
+    }
+
+    & table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 1rem;
+      border: 1px solid var(--dark);
+    }
+
+    & table th,
+    & table td {
+      padding: 0.3rem;
+      vertical-align: top;
+      border-top: 1px solid var(--dark);
+      border: 1px solid var(--dark);
+    }
+
+    & table thead th {
+      vertical-align: bottom;
+      border-bottom: 2px solid var(--dark);
+    }
+
+    & table tbody + tbody {
+      border-top: 2px solid var(--dark);
+    }
+  }
+}

@@ -1,8 +1,7 @@
 import { Component, linkEvent } from "inferno";
 import { SortType } from "lemmy-js-client";
 import { i18n } from "../../i18next";
-import { randomStr, relTags, sortingHelpUrl } from "../../utils";
-import { Icon } from "./icon";
+import { randomStr } from "../../utils";
 
 interface SortSelectProps {
   sort: SortType;
@@ -34,13 +33,13 @@ export class SortSelect extends Component<SortSelectProps, SortSelectState> {
 
   render() {
     return (
-      <>
+      <div class="d-flex align-items-center">
         <select
           id={this.id}
           name={this.id}
           value={this.state.sort}
           onChange={linkEvent(this, this.handleSortChange)}
-          class="custom-select w-auto mr-2 mb-2"
+          class="form-select w-auto"
           aria-label={i18n.t("sort_type")}
         >
           <option disabled aria-hidden="true">
@@ -69,15 +68,15 @@ export class SortSelect extends Component<SortSelectProps, SortSelectState> {
           <option value={SortType.TopYear}>{i18n.t("top_year")}</option>
           <option value={SortType.TopAll}>{i18n.t("top_all")}</option>
         </select>
-        <a
+        {/*<a
           className="text-muted"
           href={sortingHelpUrl}
           rel={relTags}
           title={i18n.t("sorting_help")}
         >
           <Icon icon="help-circle" classes="icon-inline" />
-        </a>
-      </>
+        </a>*/}
+      </div>
     );
   }
 

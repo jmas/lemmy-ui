@@ -38,7 +38,7 @@ export class Legal extends Component<any, LegalState> {
             siteView.site.legal_information.match({
               some: legal => (
                 <div
-                  className="md-div"
+                  className="uj-md-text"
                   dangerouslySetInnerHTML={mdToHtml(legal)}
                 />
               ),

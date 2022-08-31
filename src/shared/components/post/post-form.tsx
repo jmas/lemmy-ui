@@ -177,11 +177,9 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
           message={i18n.t("block_leaving")}
         />
         <form onSubmit={linkEvent(this, this.handlePostSubmit)}>
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label" htmlFor="post-url">
-              {i18n.t("url")}
-            </label>
-            <div class="col-sm-10">
+          <div class="form-group">
+            <label htmlFor="post-url">{i18n.t("url")}</label>
+            <div>
               <input
                 type="url"
                 id="post-url"
@@ -230,7 +228,7 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
                         href={`${webArchiveUrl}/save/${encodeURIComponent(
                           url
                         )}`}
-                        class="mr-2 d-inline-block float-right text-muted small font-weight-bold"
+                        class="me-2 d-inline-block float-right text-muted small font-weight-bold"
                         rel={relTags}
                       >
                         archive.org {i18n.t("archive_link")}
@@ -239,7 +237,7 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
                         href={`${ghostArchiveUrl}/search?term=${encodeURIComponent(
                           url
                         )}`}
-                        class="mr-2 d-inline-block float-right text-muted small font-weight-bold"
+                        class="me-2 d-inline-block float-right text-muted small font-weight-bold"
                         rel={relTags}
                       >
                         ghostarchive.org {i18n.t("archive_link")}
@@ -248,7 +246,7 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
                         href={`${archiveTodayUrl}/?run=1&url=${encodeURIComponent(
                           url
                         )}`}
-                        class="mr-2 d-inline-block float-right text-muted small font-weight-bold"
+                        class="me-2 d-inline-block float-right text-muted small font-weight-bold"
                         rel={relTags}
                       >
                         archive.today {i18n.t("archive_link")}
@@ -282,11 +280,9 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
               })}
             </div>
           </div>
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label" htmlFor="post-title">
-              {i18n.t("title")}
-            </label>
-            <div class="col-sm-10">
+          <div class="form-group">
+            <label htmlFor="post-title">{i18n.t("title")}</label>
+            <div>
               <textarea
                 value={this.state.postForm.name}
                 id="post-title"
@@ -324,9 +320,9 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
             </div>
           </div>
 
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label">{i18n.t("body")}</label>
-            <div class="col-sm-10">
+          <div class="form-group">
+            <label>{i18n.t("body")}</label>
+            <div>
               <MarkdownTextArea
                 initialContent={this.state.postForm.body}
                 onContentChange={this.handlePostBodyChange}
@@ -337,13 +333,11 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
             </div>
           </div>
           {this.props.post_view.isNone() && (
-            <div class="form-group row">
-              <label class="col-sm-2 col-form-label" htmlFor="post-community">
-                {i18n.t("community")}
-              </label>
-              <div class="col-sm-10">
+            <div class="form-group">
+              <label htmlFor="post-community">{i18n.t("community")}</label>
+              <div>
                 <select
-                  class="form-control"
+                  class="form-select"
                   id="post-community"
                   value={this.state.postForm.community_id}
                   onInput={linkEvent(this, this.handlePostCommunityChange)}
@@ -359,11 +353,8 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
             </div>
           )}
           {this.props.enableNsfw && (
-            <div class="form-group row">
-              <legend class="col-form-label col-sm-2 pt-0">
-                {i18n.t("nsfw")}
-              </legend>
-              <div class="col-sm-10">
+            <div class="form-group">
+              <div>
                 <div class="form-check">
                   <input
                     class="form-check-input position-static"
@@ -372,6 +363,9 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
                     checked={toUndefined(this.state.postForm.nsfw)}
                     onChange={linkEvent(this, this.handlePostNsfwChange)}
                   />
+                  <label htmlFor="post-nsfw" class="form-check-label">
+                    {i18n.t("nsfw")}
+                  </label>
                 </div>
               </div>
             </div>
@@ -386,14 +380,14 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
             value={toUndefined(this.state.postForm.honeypot)}
             onInput={linkEvent(this, this.handleHoneyPotChange)}
           />
-          <div class="form-group row">
-            <div class="col-sm-10">
+          <div class="form-group mb-0">
+            <div>
               <button
                 disabled={
                   !this.state.postForm.community_id || this.state.loading
                 }
                 type="submit"
-                class="btn btn-secondary mr-2"
+                class="btn btn-primary me-2"
               >
                 {this.state.loading ? (
                   <Spinner />

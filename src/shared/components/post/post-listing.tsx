@@ -115,7 +115,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     viewSource: false,
     showAdvanced: false,
     showMoreMobile: false,
-    showBody: false,
+    showBody: true,
     showReportDialog: false,
     reportReason: None,
     my_vote: this.props.post_view.my_vote,
@@ -148,7 +148,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   render() {
     let post = this.props.post_view.post;
     return (
-      <div class="post-listing">
+      <div class="card p-3 uj-post-card border">
         {!this.state.showEdit ? (
           <>
             {this.listing()}
@@ -157,6 +157,15 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               this.showBody &&
               post.embed_title.isSome() && <MetadataCard post={post} />}
             {this.showBody && this.body()}
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                {this.commentsLine(false)}
+                {this.userActionsLine()}
+                {this.duplicatesLine()}
+                {this.removeAndBanDialogs()}
+              </div>
+              {!this.props.viewOnly && this.voteBar()}
+            </div>
           </>
         ) : (
           <div class="col-12">
@@ -178,11 +187,14 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   body() {
     return this.props.post_view.post.body.match({
       some: body => (
-        <div class="col-12 card my-2 p-2">
+        <div class="mb-3">
           {this.state.viewSource ? (
             <pre>{body}</pre>
           ) : (
-            <div className="md-div" dangerouslySetInnerHTML={mdToHtml(body)} />
+            <div
+              className="uj-md-text"
+              dangerouslySetInnerHTML={mdToHtml(body)}
+            />
           )}
         </div>
       ),
@@ -298,7 +310,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             title={url.unwrap()}
             rel={relTags}
           >
-            <div class="thumbnail rounded bg-light d-flex justify-content-center">
+            <div class="thumbnail bg-light d-flex justify-content-center uj-thumbnail">
               <Icon icon="external-link" classes="d-flex align-items-center" />
             </div>
           </a>
@@ -311,7 +323,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           to={`/post/${post.id}`}
           title={i18n.t("comments")}
         >
-          <div class="thumbnail rounded bg-light d-flex justify-content-center">
+          <div class="thumbnail bg-light d-flex justify-content-center uj-thumbnail">
             <Icon icon="message-square" classes="d-flex align-items-center" />
           </div>
         </Link>
@@ -322,18 +334,22 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   createdLine() {
     let post_view = this.props.post_view;
     return (
-      <ul class="list-inline mb-1 text-muted small">
+      <ul class="list-inline mb-2 text-muted small">
         <li className="list-inline-item">
           <PersonListing person={post_view.creator} />
 
           {this.creatorIsMod_ && (
-            <span className="mx-1 badge badge-light">{i18n.t("mod")}</span>
+            <span className="mx-1 badge rounded-pill text-bg-light">
+              {i18n.t("mod")}
+            </span>
           )}
           {this.creatorIsAdmin_ && (
-            <span className="mx-1 badge badge-light">{i18n.t("admin")}</span>
+            <span className="mx-1 badge rounded-pill text-bg-light">
+              {i18n.t("admin")}
+            </span>
           )}
           {post_view.creator.bot_account && (
-            <span className="mx-1 badge badge-light">
+            <span className="mx-1 badge rounded-pill text-bg-light">
               {i18n.t("bot_account").toLowerCase()}
             </span>
           )}
@@ -390,7 +406,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
                   data-tippy-allowHtml={true}
                   onClick={linkEvent(this, this.handleShowBody)}
                 >
-                  <Icon icon="book-open" classes="icon-inline mr-1" />
+                  <Icon icon="book-open" classes="icon-inline me-1" />
                 </button>
               </li>
             </>
@@ -403,30 +419,32 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
 
   voteBar() {
     return (
-      <div className={`vote-bar col-1 pr-0 small text-center`}>
+      <div className={`vote-bar d-flex`}>
         <button
-          className={`btn-animate btn btn-link p-0 ${
+          className={`btn-animate btn btn-link d-flex align-items-center ${
             this.state.my_vote.unwrapOr(0) == 1 ? "text-info" : "text-muted"
           }`}
           onClick={this.handlePostLike}
           data-tippy-content={i18n.t("upvote")}
           aria-label={i18n.t("upvote")}
         >
-          <Icon icon="arrow-up1" classes="upvote" />
+          <Icon icon="arrow-up1" />
         </button>
-        {showScores() ? (
-          <div
-            class={`unselectable pointer font-weight-bold text-muted px-1`}
-            data-tippy-content={this.pointsTippy}
-          >
-            {numToSI(this.state.score)}
-          </div>
-        ) : (
-          <div class="p-1"></div>
-        )}
+        <div class="d-flex align-items-center">
+          {showScores() ? (
+            <div
+              class={`unselectable pointer font-weight-bold text-muted px-1`}
+              data-tippy-content={this.pointsTippy}
+            >
+              {numToSI(this.state.score)}
+            </div>
+          ) : (
+            <div class="p-1"></div>
+          )}
+        </div>
         {this.props.enableDownvotes && (
           <button
-            className={`btn-animate btn btn-link p-0 ${
+            className={`btn-animate btn btn-link d-flex align-items-center ${
               this.state.my_vote.unwrapOr(0) == -1
                 ? "text-danger"
                 : "text-muted"
@@ -435,7 +453,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             data-tippy-content={i18n.t("downvote")}
             aria-label={i18n.t("downvote")}
           >
-            <Icon icon="arrow-down1" classes="downvote" />
+            <Icon icon="arrow-down1" />
           </button>
         )}
       </div>
@@ -446,7 +464,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     let post = this.props.post_view.post;
     return (
       <div className="post-title overflow-hidden">
-        <h5>
+        <h5 class="fw-semibold my-2">
           {post.url.match({
             some: url => (
               <a
@@ -470,7 +488,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           })}
           {post.url.map(isImage).or(post.thumbnail_url).unwrapOr(false) && (
             <button
-              class="btn btn-link text-monospace text-muted small d-inline-block ml-2"
+              class="btn btn-link text-monospace text-muted small d-inline-block ms-2"
               data-tippy-content={i18n.t("expand_here")}
               onClick={linkEvent(this, this.handleImageExpandClick)}
             >
@@ -483,13 +501,13 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             </button>
           )}
           {post.removed && (
-            <small className="ml-2 text-muted font-italic">
+            <small className="ms-2 text-muted font-italic">
               {i18n.t("removed")}
             </small>
           )}
           {post.deleted && (
             <small
-              className="unselectable pointer ml-2 text-muted font-italic"
+              className="unselectable pointer ms-2 text-muted font-italic"
               data-tippy-content={i18n.t("deleted")}
             >
               <Icon icon="trash" classes="icon-inline text-danger" />
@@ -497,7 +515,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           )}
           {post.locked && (
             <small
-              className="unselectable pointer ml-2 text-muted font-italic"
+              className="unselectable pointer ms-2 text-muted font-italic"
               data-tippy-content={i18n.t("locked")}
             >
               <Icon icon="lock" classes="icon-inline text-danger" />
@@ -505,14 +523,14 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           )}
           {post.stickied && (
             <small
-              className="unselectable pointer ml-2 text-muted font-italic"
+              className="unselectable pointer ms-2 text-muted font-italic"
               data-tippy-content={i18n.t("stickied")}
             >
               <Icon icon="pin" classes="icon-inline text-primary" />
             </small>
           )}
           {post.nsfw && (
-            <small className="ml-2 text-muted font-italic">
+            <small className="ms-2 text-muted font-italic">
               {i18n.t("nsfw")}
             </small>
           )}
@@ -527,11 +545,11 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         dupes.length > 0 && (
           <ul class="list-inline mb-1 small text-muted">
             <>
-              <li className="list-inline-item mr-2">
+              <li className="list-inline-item me-2">
                 {i18n.t("cross_posted_to")}
               </li>
               {dupes.map(pv => (
-                <li className="list-inline-item mr-2">
+                <li className="list-inline-item me-2">
                   <Link to={`/post/${pv.post.id}`}>
                     {pv.community.local
                       ? pv.community.name
@@ -617,7 +635,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   get commentsButton() {
     let post_view = this.props.post_view;
     return (
-      <button class="btn btn-link text-muted py-0 pl-0">
+      <button class="btn btn-link text-muted py-0 ps-0">
         <Link
           className="text-muted"
           title={i18n.t("number_of_comments", {
@@ -626,7 +644,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           })}
           to={`/post/${post_view.post.id}?scrollToComments=true`}
         >
-          <Icon icon="message-square" classes="mr-1" inline />
+          <Icon icon="message-square" classes="me-1" inline />
           {i18n.t("number_of_comments", {
             count: post_view.counts.comments,
             formattedCount: numToSI(post_view.counts.comments),
@@ -652,12 +670,12 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           >
             <Icon icon="arrow-up1" classes="icon-inline small" />
             {showScores() && (
-              <span class="ml-2">{numToSI(this.state.upvotes)}</span>
+              <span class="ms-2">{numToSI(this.state.upvotes)}</span>
             )}
           </button>
           {this.props.enableDownvotes && (
             <button
-              className={`ml-2 btn-animate btn py-0 px-1 ${
+              className={`ms-2 btn-animate btn py-0 px-1 ${
                 this.state.my_vote.unwrapOr(0) == -1
                   ? "text-danger"
                   : "text-muted"
@@ -669,7 +687,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               <Icon icon="arrow-down1" classes="icon-inline small" />
               {showScores() && (
                 <span
-                  class={classNames("ml-2", {
+                  class={classNames("ms-2", {
                     invisible: this.state.downvotes === 0,
                   })}
                 >
@@ -705,7 +723,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   get crossPostButton() {
     return (
       <Link
-        className="btn btn-link btn-animate text-muted py-0"
+        className="btn btn-link btn-animate text-muted py-0 d-flex align-items-center"
         to={`/create_post${this.crossPostParams}`}
         title={i18n.t("cross_post")}
       >
@@ -926,13 +944,13 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             ) : (
               <>
                 <button
-                  class="d-inline-block mr-1 btn btn-link btn-animate text-muted py-0"
+                  class="d-inline-block me-1 btn btn-link btn-animate text-muted py-0"
                   aria-label={i18n.t("are_you_sure")}
                 >
                   {i18n.t("are_you_sure")}
                 </button>
                 <button
-                  class="btn btn-link btn-animate text-muted py-0 d-inline-block mr-1"
+                  class="btn btn-link btn-animate text-muted py-0 d-inline-block me-1"
                   aria-label={i18n.t("yes")}
                   onClick={linkEvent(this, this.handleTransferCommunity)}
                 >
@@ -1025,13 +1043,13 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             class="form-inline"
             onSubmit={linkEvent(this, this.handleModRemoveSubmit)}
           >
-            <label class="sr-only" htmlFor="post-listing-remove-reason">
+            <label class="visually-hidden" htmlFor="post-listing-remove-reason">
               {i18n.t("reason")}
             </label>
             <input
               type="text"
               id="post-listing-remove-reason"
-              class="form-control mr-2"
+              class="form-control me-2"
               placeholder={i18n.t("reason")}
               value={toUndefined(this.state.removeReason)}
               onInput={linkEvent(this, this.handleModRemoveReasonChange)}
@@ -1054,7 +1072,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               <input
                 type="text"
                 id="post-listing-ban-reason"
-                class="form-control mr-2"
+                class="form-control me-2"
                 placeholder={i18n.t("reason")}
                 value={toUndefined(this.state.banReason)}
                 onInput={linkEvent(this, this.handleModBanReasonChange)}
@@ -1065,7 +1083,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               <input
                 type="number"
                 id={`mod-ban-expires`}
-                class="form-control mr-2"
+                class="form-control me-2"
                 placeholder={i18n.t("number_of_days")}
                 value={toUndefined(this.state.banExpireDays)}
                 onInput={linkEvent(this, this.handleModBanExpireDaysChange)}
@@ -1092,7 +1110,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             {/* TODO hold off on expires until later */}
             {/* <div class="form-group row"> */}
             {/*   <label class="col-form-label">Expires</label> */}
-            {/*   <input type="date" class="form-control mr-2" placeholder={i18n.t('expires')} value={this.state.banExpires} onInput={linkEvent(this, this.handleModBanExpiresChange)} /> */}
+            {/*   <input type="date" class="form-control me-2" placeholder={i18n.t('expires')} value={this.state.banExpires} onInput={linkEvent(this, this.handleModBanExpiresChange)} /> */}
             {/* </div> */}
             <div class="form-group row">
               <button
@@ -1110,13 +1128,13 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             class="form-inline"
             onSubmit={linkEvent(this, this.handleReportSubmit)}
           >
-            <label class="sr-only" htmlFor="post-report-reason">
+            <label class="visually-hidden" htmlFor="post-report-reason">
               {i18n.t("reason")}
             </label>
             <input
               type="text"
               id="post-report-reason"
-              class="form-control mr-2"
+              class="form-control me-2"
               placeholder={i18n.t("reason")}
               required
               value={toUndefined(this.state.reportReason)}
@@ -1137,13 +1155,13 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             onSubmit={linkEvent(this, this.handlePurgeSubmit)}
           >
             <PurgeWarning />
-            <label class="sr-only" htmlFor="purge-reason">
+            <label class="visually-hidden" htmlFor="purge-reason">
               {i18n.t("reason")}
             </label>
             <input
               type="text"
               id="purge-reason"
-              class="form-control mr-2"
+              class="form-control me-2"
               placeholder={i18n.t("reason")}
               value={toUndefined(this.state.purgeReason)}
               onInput={linkEvent(this, this.handlePurgeReasonChange)}
@@ -1188,7 +1206,9 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     return (
       !this.showBody &&
       post.body.match({
-        some: body => <div className="md-div mb-1 preview-lines">{body}</div>,
+        some: body => (
+          <div className="uj-md-text mb-1 preview-lines">{body}</div>
+        ),
         none: <></>,
       })
     );
@@ -1219,24 +1239,19 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
 
         {/* The larger view*/}
         <div class="d-none d-sm-block">
-          <div class="row">
-            {!this.props.viewOnly && this.voteBar()}
-            <div class="col-sm-2 pr-0">
-              <div class="">{this.thumbnail()}</div>
-            </div>
-            <div class="col-12 col-sm-9">
-              <div class="row">
-                <div className="col-12">
-                  {this.postTitleLine()}
-                  {this.createdLine()}
-                  {this.commentsLine()}
-                  {this.duplicatesLine()}
-                  {this.userActionsLine()}
-                  {this.removeAndBanDialogs()}
-                </div>
-              </div>
-            </div>
+          {this.createdLine()}
+          {this.postTitleLine()}
+
+          {/* {this.commentsLine()} */}
+          {/* {this.duplicatesLine()} */}
+          <div
+            class="my-3"
+            style={{ "margin-left": "-1em", "margin-right": "-1em" }}
+          >
+            {this.thumbnail()}
           </div>
+          {/* {this.userActionsLine()} */}
+          {/* {this.removeAndBanDialogs()} */}
         </div>
       </>
     );

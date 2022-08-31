@@ -383,23 +383,25 @@ export class Search extends Component<any, SearchState> {
   render() {
     return (
       <div class="container">
-        <HtmlTags
-          title={this.documentTitle}
-          path={this.context.router.route.match.url}
-          description={None}
-          image={None}
-        />
-        <h5>{i18n.t("search")}</h5>
-        {this.selects()}
-        {this.searchForm()}
-        {this.state.type_ == SearchType.All && this.all()}
-        {this.state.type_ == SearchType.Comments && this.comments()}
-        {this.state.type_ == SearchType.Posts && this.posts()}
-        {this.state.type_ == SearchType.Communities && this.communities()}
-        {this.state.type_ == SearchType.Users && this.users()}
-        {this.state.type_ == SearchType.Url && this.posts()}
-        {this.resultsCount() == 0 && <span>{i18n.t("no_results")}</span>}
-        <Paginator page={this.state.page} onChange={this.handlePageChange} />
+        <div class="card p-5">
+          <HtmlTags
+            title={this.documentTitle}
+            path={this.context.router.route.match.url}
+            description={None}
+            image={None}
+          />
+          <h5>{i18n.t("search")}</h5>
+          {this.selects()}
+          {this.searchForm()}
+          {this.state.type_ == SearchType.All && this.all()}
+          {this.state.type_ == SearchType.Comments && this.comments()}
+          {this.state.type_ == SearchType.Posts && this.posts()}
+          {this.state.type_ == SearchType.Communities && this.communities()}
+          {this.state.type_ == SearchType.Users && this.users()}
+          {this.state.type_ == SearchType.Url && this.posts()}
+          {this.resultsCount() == 0 && <span>{i18n.t("no_results")}</span>}
+          <Paginator page={this.state.page} onChange={this.handlePageChange} />
+        </div>
       </div>
     );
   }
@@ -412,7 +414,7 @@ export class Search extends Component<any, SearchState> {
       >
         <input
           type="text"
-          class="form-control mr-2 mb-2"
+          class="form-control me-2 mb-2"
           value={this.state.searchText}
           placeholder={`${i18n.t("search")}...`}
           aria-label={i18n.t("search")}
@@ -420,7 +422,7 @@ export class Search extends Component<any, SearchState> {
           required
           minLength={1}
         />
-        <button type="submit" class="btn btn-secondary mr-2 mb-2">
+        <button type="submit" class="btn btn-secondary me-2 mb-2">
           {this.state.loading ? <Spinner /> : <span>{i18n.t("search")}</span>}
         </button>
       </form>
@@ -433,7 +435,7 @@ export class Search extends Component<any, SearchState> {
         <select
           value={this.state.type_}
           onChange={linkEvent(this, this.handleTypeChange)}
-          class="custom-select w-auto mb-2"
+          class="form-select w-auto mb-2"
           aria-label={i18n.t("type")}
         >
           <option disabled aria-hidden="true">
@@ -448,7 +450,7 @@ export class Search extends Component<any, SearchState> {
           <option value={SearchType.Users}>{i18n.t("users")}</option>
           <option value={SearchType.Url}>{i18n.t("url")}</option>
         </select>
-        <span class="ml-2">
+        <span class="ms-2">
           <ListingTypeSelect
             type_={this.state.listingType}
             showLocal={showLocal(this.isoData)}
@@ -456,7 +458,7 @@ export class Search extends Component<any, SearchState> {
             onChange={this.handleListingTypeChange}
           />
         </span>
-        <span class="ml-2">
+        <span class="ms-2">
           <SortSelect
             sort={this.state.sort}
             onChange={this.handleSortChange}
@@ -764,7 +766,7 @@ export class Search extends Component<any, SearchState> {
         </label>
         <div>
           <select
-            class="form-control"
+            class="form-select"
             id="community-filter"
             value={this.state.communityId}
           >
@@ -786,7 +788,7 @@ export class Search extends Component<any, SearchState> {
         </label>
         <div>
           <select
-            class="form-control"
+            class="form-select"
             id="creator-filter"
             value={this.state.creatorId}
           >

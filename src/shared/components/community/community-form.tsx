@@ -127,20 +127,17 @@ export class CommunityForm extends Component<
         />
         <form onSubmit={linkEvent(this, this.handleCreateCommunitySubmit)}>
           {this.props.community_view.isNone() && (
-            <div class="form-group row">
-              <label
-                class="col-12 col-sm-2 col-form-label"
-                htmlFor="community-name"
-              >
+            <div class="form-group">
+              <label htmlFor="community-name">
                 {i18n.t("name")}
                 <span
-                  class="position-absolute pointer unselectable ml-2 text-muted"
+                  class="position-absolute pointer unselectable ms-2 text-muted"
                   data-tippy-content={i18n.t("name_explain")}
                 >
                   <Icon icon="help-circle" classes="icon-inline" />
                 </span>
               </label>
-              <div class="col-12 col-sm-10">
+              <div>
                 <input
                   type="text"
                   id="community-name"
@@ -155,20 +152,17 @@ export class CommunityForm extends Component<
               </div>
             </div>
           )}
-          <div class="form-group row">
-            <label
-              class="col-12 col-sm-2 col-form-label"
-              htmlFor="community-title"
-            >
+          <div class="form-group">
+            <label htmlFor="community-title">
               {i18n.t("display_name")}
               <span
-                class="position-absolute pointer unselectable ml-2 text-muted"
+                class="position-absolute pointer unselectable ms-2 text-muted"
                 data-tippy-content={i18n.t("display_name_explain")}
               >
                 <Icon icon="help-circle" classes="icon-inline" />
               </span>
             </label>
-            <div class="col-12 col-sm-10">
+            <div>
               <input
                 type="text"
                 id="community-title"
@@ -181,9 +175,9 @@ export class CommunityForm extends Component<
               />
             </div>
           </div>
-          <div class="form-group row">
-            <label class="col-12 col-sm-2">{i18n.t("icon")}</label>
-            <div class="col-12 col-sm-10">
+          <div class="form-group">
+            <label>{i18n.t("icon")}</label>
+            <div>
               <ImageUploadForm
                 uploadTitle={i18n.t("upload_icon")}
                 imageSrc={this.state.communityForm.icon}
@@ -193,9 +187,9 @@ export class CommunityForm extends Component<
               />
             </div>
           </div>
-          <div class="form-group row">
-            <label class="col-12 col-sm-2">{i18n.t("banner")}</label>
-            <div class="col-12 col-sm-10">
+          <div class="form-group">
+            <label>{i18n.t("banner")}</label>
+            <div>
               <ImageUploadForm
                 uploadTitle={i18n.t("upload_banner")}
                 imageSrc={this.state.communityForm.banner}
@@ -204,14 +198,12 @@ export class CommunityForm extends Component<
               />
             </div>
           </div>
-          <div class="form-group row">
-            <label class="col-12 col-sm-2 col-form-label" htmlFor={this.id}>
-              {i18n.t("sidebar")}
-            </label>
-            <div class="col-12 col-sm-10">
+          <div class="form-group">
+            <label htmlFor={this.id}>{i18n.t("sidebar")}</label>
+            <div>
               <MarkdownTextArea
                 initialContent={this.state.communityForm.description}
-                placeholder={Some("description")}
+                placeholder={Some(i18n.t("description"))}
                 buttonTitle={None}
                 maxLength={None}
                 onContentChange={this.handleCommunityDescriptionChange}
@@ -220,28 +212,26 @@ export class CommunityForm extends Component<
           </div>
 
           {this.props.enableNsfw && (
-            <div class="form-group row">
-              <legend class="col-form-label col-sm-2 pt-0">
-                {i18n.t("nsfw")}
-              </legend>
-              <div class="col-10">
+            <div class="form-group">
+              <div>
                 <div class="form-check">
                   <input
-                    class="form-check-input position-static"
+                    class="form-check-input"
                     id="community-nsfw"
                     type="checkbox"
                     checked={toUndefined(this.state.communityForm.nsfw)}
                     onChange={linkEvent(this, this.handleCommunityNsfwChange)}
                   />
+                  <label class="form-check-label" htmlFor="community-nsfw">
+                    {i18n.t("nsfw")}
+                  </label>
                 </div>
               </div>
             </div>
           )}
-          <div class="form-group row">
-            <legend class="col-form-label col-6 pt-0">
-              {i18n.t("only_mods_can_post_in_community")}
-            </legend>
-            <div class="col-6">
+
+          <div class="form-group">
+            <div>
               <div class="form-check">
                 <input
                   class="form-check-input position-static"
@@ -255,34 +245,38 @@ export class CommunityForm extends Component<
                     this.handleCommunityPostingRestrictedToMods
                   )}
                 />
+                <label
+                  class="form-check-label"
+                  htmlFor="community-only-mods-can-post"
+                >
+                  {i18n.t("only_mods_can_post_in_community")}
+                </label>
               </div>
             </div>
           </div>
-          <div class="form-group row">
-            <div class="col-12">
-              <button
-                type="submit"
-                class="btn btn-secondary mr-2"
-                disabled={this.state.loading}
-              >
-                {this.state.loading ? (
-                  <Spinner />
-                ) : this.props.community_view.isSome() ? (
-                  capitalizeFirstLetter(i18n.t("save"))
-                ) : (
-                  capitalizeFirstLetter(i18n.t("create"))
-                )}
-              </button>
-              {this.props.community_view.isSome() && (
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  onClick={linkEvent(this, this.handleCancel)}
-                >
-                  {i18n.t("cancel")}
-                </button>
+          <div class="form-group mb-0">
+            <button
+              type="submit"
+              class="btn btn-primary me-2"
+              disabled={this.state.loading}
+            >
+              {this.state.loading ? (
+                <Spinner />
+              ) : this.props.community_view.isSome() ? (
+                capitalizeFirstLetter(i18n.t("save"))
+              ) : (
+                capitalizeFirstLetter(i18n.t("create"))
               )}
-            </div>
+            </button>
+            {this.props.community_view.isSome() && (
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onClick={linkEvent(this, this.handleCancel)}
+              >
+                {i18n.t("cancel")}
+              </button>
+            )}
           </div>
         </form>
       </>

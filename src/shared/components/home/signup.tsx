@@ -202,7 +202,7 @@ export class Signup extends Component<any, State> {
                   .map(validEmail)
                   .unwrapOr(true) && (
                   <div class="mt-2 mb-0 alert alert-warning" role="alert">
-                    <Icon icon="alert-triangle" classes="icon-inline mr-2" />
+                    <Icon icon="alert-triangle" classes="icon-inline me-2" />
                     {i18n.t("no_password_reset")}
                   </div>
                 )}
@@ -262,13 +262,13 @@ export class Signup extends Component<any, State> {
               <div class="form-group row">
                 <div class="offset-sm-2 col-sm-10">
                   <div class="mt-2 alert alert-warning" role="alert">
-                    <Icon icon="alert-triangle" classes="icon-inline mr-2" />
+                    <Icon icon="alert-triangle" classes="icon-inline me-2" />
                     {i18n.t("fill_out_application")}
                   </div>
                   {siteView.site.application_question.match({
                     some: question => (
                       <div
-                        className="md-div"
+                        className="uj-md-text"
                         dangerouslySetInnerHTML={mdToHtml(question)}
                       />
                     ),
@@ -301,7 +301,7 @@ export class Signup extends Component<any, State> {
           {this.state.captcha.isSome() && (
             <div class="form-group row">
               <label class="col-sm-2" htmlFor="register-captcha">
-                <span class="mr-2">{i18n.t("enter_code")}</span>
+                <span class="me-2">{i18n.t("enter_code")}</span>
                 <button
                   type="button"
                   class="btn btn-secondary"

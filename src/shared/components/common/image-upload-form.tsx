@@ -34,7 +34,7 @@ export class ImageUploadForm extends Component<
 
   render() {
     return (
-      <form class="d-inline">
+      <form>
         <label
           htmlFor={this.id}
           class="pointer text-muted small font-weight-bold"
@@ -58,9 +58,7 @@ export class ImageUploadForm extends Component<
                 </a>
               </span>
             ),
-            none: (
-              <span class="btn btn-secondary">{this.props.uploadTitle}</span>
-            ),
+            none: <span class="btn btn-light">{this.props.uploadTitle}</span>,
           })}
         </label>
         <input

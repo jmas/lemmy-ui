@@ -216,12 +216,12 @@ export class Settings extends Component<any, SettingsState> {
     return (
       <div class="row">
         <div class="col-12 col-md-6">
-          <div class="card border-secondary mb-3">
+          <div class="card mb-3">
             <div class="card-body">{this.saveUserSettingsHtmlForm()}</div>
           </div>
         </div>
         <div class="col-12 col-md-6">
-          <div class="card border-secondary mb-3">
+          <div class="card mb-3">
             <div class="card-body">{this.changePasswordHtmlForm()}</div>
           </div>
         </div>
@@ -233,12 +233,12 @@ export class Settings extends Component<any, SettingsState> {
     return (
       <div class="row">
         <div class="col-12 col-md-6">
-          <div class="card border-secondary mb-3">
+          <div class="card mb-3">
             <div class="card-body">{this.blockUserCard()}</div>
           </div>
         </div>
         <div class="col-12 col-md-6">
-          <div class="card border-secondary mb-3">
+          <div class="card mb-3">
             <div class="card-body">{this.blockCommunityCard()}</div>
           </div>
         </div>
@@ -303,7 +303,7 @@ export class Settings extends Component<any, SettingsState> {
             </div>
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-block btn-secondary mr-4">
+            <button type="submit" class="btn btn-block btn-secondary me-4">
               {this.state.changePasswordLoading ? (
                 <Spinner />
               ) : (
@@ -360,7 +360,7 @@ export class Settings extends Component<any, SettingsState> {
         </label>
         <div class="col-md-8">
           <select
-            class="form-control"
+            class="form-select"
             id="block-person-filter"
             value={this.state.blockPerson.map(p => p.person.id).unwrapOr(0)}
           >
@@ -423,7 +423,7 @@ export class Settings extends Component<any, SettingsState> {
         </label>
         <div class="col-md-8">
           <select
-            class="form-control"
+            class="form-select"
             id="block-community-filter"
             value={this.state.blockCommunityId}
           >
@@ -546,7 +546,7 @@ export class Settings extends Component<any, SettingsState> {
                 id="user-language"
                 value={toUndefined(this.state.saveUserSettingsForm.lang)}
                 onChange={linkEvent(this, this.handleLangChange)}
-                class="custom-select w-auto"
+                class="form-select w-auto"
               >
                 <option disabled aria-hidden="true">
                   {i18n.t("language")}
@@ -572,7 +572,7 @@ export class Settings extends Component<any, SettingsState> {
                 id="user-theme"
                 value={toUndefined(this.state.saveUserSettingsForm.theme)}
                 onChange={linkEvent(this, this.handleThemeChange)}
-                class="custom-select w-auto"
+                class="form-select w-auto"
               >
                 <option disabled aria-hidden="true">
                   {i18n.t("theme")}
@@ -757,7 +757,7 @@ export class Settings extends Component<any, SettingsState> {
             </div>
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-block btn-secondary mr-4">
+            <button type="submit" class="btn btn-block btn-secondary me-4">
               {this.state.saveUserSettingsLoading ? (
                 <Spinner />
               ) : (
@@ -793,7 +793,7 @@ export class Settings extends Component<any, SettingsState> {
                   class="form-control my-2"
                 />
                 <button
-                  class="btn btn-danger mr-4"
+                  class="btn btn-danger me-4"
                   disabled={!this.state.deleteAccountForm.password}
                   onClick={linkEvent(this, this.handleDeleteAccount)}
                 >

@@ -14,7 +14,7 @@ export class Paginator extends Component<PaginatorProps, any> {
     return (
       <div class="my-2">
         <button
-          class="btn btn-secondary mr-2"
+          class="btn btn-secondary me-2"
           disabled={this.props.page == 1}
           onClick={linkEvent(this, this.handlePrev)}
         >
