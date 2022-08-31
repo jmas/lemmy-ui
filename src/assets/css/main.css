@@ -407,7 +407,15 @@ br.big {
   background: var(--secondary);
 }
 
-.ce-toolbar__plus:hover {}
+.ce-toolbar__plus:hover {
+  background: var(--primary);
+}
+
+@media (hover: hover) {
+  .ce-popover__item:hover {
+    background-color: var(--primary);
+  }
+}
 
 
 .ce-inline-tool, .ce-conversion-toolbar__label, .ce-toolbox__button, .cdx-settings-button, .ce-toolbar__plus {
