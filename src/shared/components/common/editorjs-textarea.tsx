@@ -12,6 +12,7 @@ import {
     pictrsDeleteToast,
     randomStr,
     relTags,
+    setupTribute,
     toast,
 } from "../../utils";
 import {Icon, Spinner} from "./icon";
@@ -54,7 +55,7 @@ export class EditorJsTextArea extends Component<EditorJsTextAreaProps,
     EditorJsTextAreaState> {
     private id = `comment-textarea-${randomStr()}`;
     private formId = `comment-form-${randomStr()}`;
-    // private tribute: any;
+    private tribute: any;
     private editorJsInstance: any = null;
     private emptyState: EditorJsTextAreaState = {
         content: this.props.initialContent,
@@ -66,9 +67,9 @@ export class EditorJsTextArea extends Component<EditorJsTextAreaProps,
     constructor(props: any, context: any) {
         super(props, context);
 
-        // if (isBrowser()) {
-        //     this.tribute = setupTribute();
-        // }
+        if (isBrowser()) {
+            this.tribute = setupTribute(true);
+        }
 
         this.state = this.emptyState;
     }
@@ -77,10 +78,7 @@ export class EditorJsTextArea extends Component<EditorJsTextAreaProps,
         let textarea: any = document.getElementById(this.id);
         if (textarea && isBrowser()) {
             const editorJs = new EditorJS({
-                data: this.state.content.match({
-                    some: content => content,
-                    none: ({blocks: []}),
-                }),
+                data: this.state.content.unwrapOr({ blocks: [] }),
                 autofocus: true,
                 tools: {
                     code: Code,
@@ -101,23 +99,23 @@ export class EditorJsTextArea extends Component<EditorJsTextAreaProps,
                     this.state.content = toOption(content);
                     this.contentChange();
                     this.setState(this.state);
-                }
-            })
+                },
+            });
 
             // autosize(textarea);
-            // this.tribute.attach(textarea);
-            // textarea.addEventListener("tribute-replaced", () => {
-            //     this.state.content = Some(textarea.value);
-            //     this.setState(this.state);
-            //     autosize.update(textarea);
-            // });
-            //
+            this.tribute.attach(textarea);
+            textarea.addEventListener("tribute-replaced", () => {
+                this.state.content = Some(textarea.value);
+                this.setState(this.state);
+                autosize.update(textarea);
+            });
+
             // this.quoteInsert();
-            //
+
             // if (this.props.focus) {
             //     textarea.focus();
             // }
-            //
+
             // TODO this is slow for some reason
             // setupTippy();
         }
@@ -317,7 +315,7 @@ export class EditorJsTextArea extends Component<EditorJsTextAreaProps,
 
     contentChange() {
         if (this.props.onContentChange) {
-            this.props.onContentChange(`__editor_type:editorjs:${JSON.stringify(this.state.content)}`);
+            this.props.onContentChange(`__editor_type:editorjs:${JSON.stringify(this.state.content.unwrapOr({blocks: []}))}`);
         }
     }
 
