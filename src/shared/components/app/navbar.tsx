@@ -45,7 +45,8 @@ interface NavbarState {
   unreadApplicationCount: number;
   searchParam: string;
   toggleSearch: boolean;
-  showDropdown: boolean;
+  showProfileDropdown: boolean;
+  showCreationDropdown: boolean;
   onSiteBanner?(url: string): any;
 }
 
@@ -63,7 +64,8 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
     expanded: false,
     searchParam: "",
     toggleSearch: false,
-    showDropdown: false,
+    showProfileDropdown: false,
+    showCreationDropdown: false,
   };
   subscription: any;
 
@@ -126,7 +128,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
     const searchParam = this.state.searchParam;
     this.setState({ searchParam: "" });
     this.setState({ toggleSearch: false });
-    this.setState({ showDropdown: false, expanded: false });
+    this.setState({ showProfileDropdown: false, expanded: false });
     if (searchParam === "") {
       this.context.router.history.push(`/search/`);
     } else {
@@ -141,10 +143,75 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
     return this.navbar();
   }
 
+  creationButton() {
+    return (
+      <ul
+        class="navbar-nav ms-3"
+        style={{
+          "--bs-nav-link-color": "#fff",
+        }}
+      >
+        <li class="nav-item dropdown">
+          <button
+            class="btn btn-primary btn-icon dropdown-toggle"
+            onClick={linkEvent(this, this.handleToggleCreationDropdown)}
+            id="creationDropdown"
+            role="button"
+            aria-expanded="false"
+          >
+            <Icon icon="plus" />
+            <span>{capitalizeFirstLetter(i18n.t("create"))}</span>
+          </button>
+          {this.state.showCreationDropdown && (
+            <ul
+              class="dropdown-menu dropdown-menu-end show"
+              onMouseLeave={linkEvent(this, this.handleToggleCreationDropdown)}
+              onClick={linkEvent(this, this.handleToggleCreationDropdown)}
+              style={{
+                "--bs-nav-link-color": "#000",
+                "--bs-nav-link-hover-color": "#000",
+                "--bs-navbar-active-color": "#fff",
+                "white-space": "nowrap",
+              }}
+            >
+              <>
+                <li class="nav-item">
+                  <NavLink
+                    to={{
+                      pathname: "/create_post",
+                      prevPath: this.currentLocation,
+                    }}
+                    className="dropdown-item nav-link"
+                    onMouseUp={linkEvent(this, this.handleHideExpandNavbar)}
+                    title={i18n.t("create_post")}
+                  >
+                    {i18n.t("create_post")}
+                  </NavLink>
+                </li>
+                {this.canCreateCommunity && (
+                  <li class="nav-item">
+                    <NavLink
+                      to="/create_community"
+                      className="dropdown-item nav-link"
+                      onMouseUp={linkEvent(this, this.handleHideExpandNavbar)}
+                      title={i18n.t("create_community")}
+                    >
+                      {i18n.t("create_community")}
+                    </NavLink>
+                  </li>
+                )}
+              </>
+            </ul>
+          )}
+        </li>
+      </ul>
+    );
+  }
+
   // TODO class active corresponding to current page
   navbar() {
     return (
-      <nav class="navbar navbar-expand-lg border-bottom navbar-dark bg-dark uj-navbar">
+      <nav class="navbar navbar-expand-lg border-bottom uj-navbar">
         <div class="container-fluid">
           {/* {this.props.siteRes.site_view.match({
             some: siteView => (
@@ -171,12 +238,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
 
           {UserService.Instance.myUserInfo.isSome() && (
             <>
-              <ul
-                class="navbar-nav"
-                style={{
-                  "--bs-navbar-color": "#fff",
-                }}
-              >
+              <ul class="navbar-nav">
                 <li className="nav-item">
                   <NavLink
                     to="/inbox"
@@ -189,7 +251,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                   >
                     <Icon icon="bell" />
                     {this.state.unreadInboxCount > 0 && (
-                      <span class="mx-1 badge badge-light">
+                      <span class="mx-1 badge rounded-pill text-bg-light">
                         {numToSI(this.state.unreadInboxCount)}
                       </span>
                     )}
@@ -198,12 +260,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
               </ul>
 
               {this.moderatesSomething && (
-                <ul
-                  class="navbar-nav"
-                  style={{
-                    "--bs-navbar-color": "#fff",
-                  }}
-                >
+                <ul class="navbar-nav">
                   <li className="nav-item">
                     <NavLink
                       to="/reports"
@@ -216,7 +273,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                     >
                       <Icon icon="shield" />
                       {this.state.unreadReportCount > 0 && (
-                        <span class="mx-1 badge badge-light">
+                        <span class="mx-1 badge rounded-pill text-bg-light">
                           {numToSI(this.state.unreadReportCount)}
                         </span>
                       )}
@@ -226,12 +283,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
               )}
 
               {this.amAdmin && (
-                <ul
-                  class="navbar-nav"
-                  style={{
-                    "--bs-navbar-color": "#fff",
-                  }}
-                >
+                <ul class="navbar-nav">
                   <li className="nav-item">
                     <NavLink
                       to="/registration_applications"
@@ -246,7 +298,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                     >
                       <Icon icon="clipboard" />
                       {this.state.unreadApplicationCount > 0 && (
-                        <span class="mx-1 badge badge-light">
+                        <span class="mx-1 badge rounded-pill text-bg-light">
                           {numToSI(this.state.unreadApplicationCount)}
                         </span>
                       )}
@@ -257,12 +309,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
             </>
           )}
 
-          <ul
-            class="navbar-nav"
-            style={{
-              "--bs-navbar-color": "#fff",
-            }}
-          >
+          <ul class="navbar-nav">
             <li className="nav-item">
               <button
                 class="navbar-toggler border-0 p-1"
@@ -317,88 +364,10 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
               )}
               </ul>*/}
 
-            <ul
-              class="navbar-nav"
-              style={{
-                "--bs-nav-link-color": "#fff",
-              }}
-            >
-              <li class="nav-item dropdown">
-                <button
-                  class="btn btn-primary btn-icon dropdown-toggle"
-                  onClick={linkEvent(this, this.handleToggleDropdown)}
-                  id="navbarDropdown"
-                  role="button"
-                  aria-expanded="false"
-                  style={{
-                    "--bs-btn-color": "#000",
-                    "--bs-btn-bg": "#fff",
-                  }}
-                >
-                  <Icon icon="plus" />
-                  <span>{capitalizeFirstLetter(i18n.t("create"))}</span>
-                </button>
-                <ul
-                  class="dropdown-menu dropdown-menu-end show"
-                  onMouseLeave={linkEvent(this, this.handleToggleDropdown)}
-                  style={{
-                    "--bs-nav-link-color": "#000",
-                    "--bs-nav-link-hover-color": "#000",
-                    "--bs-navbar-active-color": "#000",
-                    "white-space": "nowrap",
-                  }}
-                >
-                  <>
-                    {/*<li class="nav-item">
-                      <NavLink
-                        to="/communities"
-                        className="nav-link"
-                        onMouseUp={linkEvent(this, this.handleHideExpandNavbar)}
-                        title={i18n.t("communities")}
-                      >
-                        {i18n.t("communities")}
-                      </NavLink>
-                    </li>*/}
-                    <li class="nav-item">
-                      <NavLink
-                        to={{
-                          pathname: "/create_post",
-                          prevPath: this.currentLocation,
-                        }}
-                        className="nav-link"
-                        onMouseUp={linkEvent(this, this.handleHideExpandNavbar)}
-                        title={i18n.t("create_post")}
-                      >
-                        {i18n.t("create_post")}
-                      </NavLink>
-                    </li>
-                    {this.canCreateCommunity && (
-                      <li class="nav-item">
-                        <NavLink
-                          to="/create_community"
-                          className="nav-link"
-                          onMouseUp={linkEvent(
-                            this,
-                            this.handleHideExpandNavbar
-                          )}
-                          title={i18n.t("create_community")}
-                        >
-                          {i18n.t("create_community")}
-                        </NavLink>
-                      </li>
-                    )}
-                  </>
-                </ul>
-              </li>
-            </ul>
+            {this.creationButton()}
 
             {this.amAdmin && (
-              <ul
-                class="navbar-nav ms-md-auto"
-                style={{
-                  "--bs-nav-link-color": "#fff",
-                }}
-              >
+              <ul class="navbar-nav ms-md-auto">
                 <li className="nav-item">
                   <NavLink
                     to="/admin"
@@ -421,7 +390,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
               >
                 <input
                   id="search-input"
-                  class="form-control uj-navbar-searchInput"
+                  class="form-control"
                   onInput={linkEvent(this, this.handleSearchParam)}
                   value={this.state.searchParam}
                   ref={this.searchTextField}
@@ -445,12 +414,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
 
             {UserService.Instance.myUserInfo.isSome() ? (
               <>
-                <ul
-                  class="navbar-nav"
-                  style={{
-                    "--bs-nav-link-color": "#fff",
-                  }}
-                >
+                <ul class="navbar-nav">
                   <li className="nav-item">
                     <NavLink
                       className="nav-link"
@@ -463,7 +427,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                     >
                       <Icon icon="bell" />
                       {this.state.unreadInboxCount > 0 && (
-                        <span class="ms-1 badge badge-light">
+                        <span class="ms-1 badge rounded-pill text-bg-light">
                           {numToSI(this.state.unreadInboxCount)}
                         </span>
                       )}
@@ -471,12 +435,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                   </li>
                 </ul>
                 {this.moderatesSomething && (
-                  <ul
-                    class="navbar-nav"
-                    style={{
-                      "--bs-nav-link-color": "#fff",
-                    }}
-                  >
+                  <ul class="navbar-nav">
                     <li className="nav-item">
                       <NavLink
                         className="nav-link"
@@ -489,7 +448,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                       >
                         <Icon icon="shield" />
                         {this.state.unreadReportCount > 0 && (
-                          <span class="ms-1 badge badge-light">
+                          <span class="ms-1 badge rounded-pill text-bg-light">
                             {numToSI(this.state.unreadReportCount)}
                           </span>
                         )}
@@ -499,12 +458,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                 )}
 
                 {this.amAdmin && (
-                  <ul
-                    class="navbar-nav"
-                    style={{
-                      "--bs-nav-link-color": "#fff",
-                    }}
-                  >
+                  <ul class="navbar-nav">
                     <li className="nav-item">
                       <NavLink
                         to="/registration_applications"
@@ -519,7 +473,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                       >
                         <Icon icon="clipboard" />
                         {this.state.unreadApplicationCount > 0 && (
-                          <span class="mx-1 badge badge-light">
+                          <span class="mx-1 badge rounded-pill text-bg-light">
                             {numToSI(this.state.unreadApplicationCount)}
                           </span>
                         )}
@@ -531,16 +485,14 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                   .map(m => m.local_user_view.person)
                   .match({
                     some: person => (
-                      <ul
-                        class="navbar-nav"
-                        style={{
-                          "--bs-nav-link-color": "#fff",
-                        }}
-                      >
+                      <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                           <button
                             class="nav-link btn btn-link dropdown-toggle"
-                            onClick={linkEvent(this, this.handleToggleDropdown)}
+                            onClick={linkEvent(
+                              this,
+                              this.handleToggleProfileDropdown
+                            )}
                             id="navbarDropdown"
                             role="button"
                             aria-expanded="false"
@@ -556,37 +508,41 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                               {person.display_name.unwrapOr(person.name)}
                             </span>
                           </button>
-                          {this.state.showDropdown && (
+                          {this.state.showProfileDropdown && (
                             <div
                               class="dropdown-menu dropdown-menu-end show"
                               onMouseLeave={linkEvent(
                                 this,
-                                this.handleToggleDropdown
+                                this.handleToggleProfileDropdown
+                              )}
+                              onClick={linkEvent(
+                                this,
+                                this.handleToggleProfileDropdown
                               )}
                               style={{
                                 "--bs-nav-link-color": "#000",
                                 "--bs-nav-link-hover-color": "#000",
-                                "--bs-navbar-active-color": "#000",
+                                "--bs-navbar-active-color": "#fff",
                                 right: 0,
                               }}
                             >
                               <li>
                                 <NavLink
                                   to={`/u/${person.name}`}
-                                  class="dropdown-item nav-link btn-icon"
+                                  class="dropdown-item nav-link d-flex"
                                   title={i18n.t("profile")}
                                 >
-                                  <Icon icon="user" />
+                                  <Icon icon="user" classes="mr-1" />
                                   <span class="ms-2">{i18n.t("profile")}</span>
                                 </NavLink>
                               </li>
                               <li>
                                 <NavLink
                                   to="/settings"
-                                  class="dropdown-item nav-link btn-icon"
+                                  class="dropdown-item nav-link d-flex"
                                   title={i18n.t("settings")}
                                 >
-                                  <Icon icon="settings" />
+                                  <Icon icon="settings" classes="mr-1" />
                                   <span class="ms-2">{i18n.t("settings")}</span>
                                 </NavLink>
                               </li>
@@ -672,7 +628,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
   }
 
   handleHideExpandNavbar(i: Navbar) {
-    i.setState({ expanded: false, showDropdown: false });
+    i.setState({ expanded: false, showProfileDropdown: false });
   }
 
   handleSearchParam(i: Navbar, event: any) {
@@ -704,12 +660,17 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
   }
 
   handleLogoutClick(i: Navbar) {
-    i.setState({ showDropdown: false, expanded: false });
+    i.setState({ showProfileDropdown: false, expanded: false });
     UserService.Instance.logout();
   }
 
-  handleToggleDropdown(i: Navbar) {
-    i.state.showDropdown = !i.state.showDropdown;
+  handleToggleProfileDropdown(i: Navbar) {
+    i.state.showProfileDropdown = !i.state.showProfileDropdown;
+    i.setState(i.state);
+  }
+
+  handleToggleCreationDropdown(i: Navbar) {
+    i.state.showCreationDropdown = !i.state.showCreationDropdown;
     i.setState(i.state);
   }
 

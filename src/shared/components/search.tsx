@@ -383,23 +383,25 @@ export class Search extends Component<any, SearchState> {
   render() {
     return (
       <div class="container">
-        <HtmlTags
-          title={this.documentTitle}
-          path={this.context.router.route.match.url}
-          description={None}
-          image={None}
-        />
-        <h5>{i18n.t("search")}</h5>
-        {this.selects()}
-        {this.searchForm()}
-        {this.state.type_ == SearchType.All && this.all()}
-        {this.state.type_ == SearchType.Comments && this.comments()}
-        {this.state.type_ == SearchType.Posts && this.posts()}
-        {this.state.type_ == SearchType.Communities && this.communities()}
-        {this.state.type_ == SearchType.Users && this.users()}
-        {this.state.type_ == SearchType.Url && this.posts()}
-        {this.resultsCount() == 0 && <span>{i18n.t("no_results")}</span>}
-        <Paginator page={this.state.page} onChange={this.handlePageChange} />
+        <div class="card p-5">
+          <HtmlTags
+            title={this.documentTitle}
+            path={this.context.router.route.match.url}
+            description={None}
+            image={None}
+          />
+          <h5>{i18n.t("search")}</h5>
+          {this.selects()}
+          {this.searchForm()}
+          {this.state.type_ == SearchType.All && this.all()}
+          {this.state.type_ == SearchType.Comments && this.comments()}
+          {this.state.type_ == SearchType.Posts && this.posts()}
+          {this.state.type_ == SearchType.Communities && this.communities()}
+          {this.state.type_ == SearchType.Users && this.users()}
+          {this.state.type_ == SearchType.Url && this.posts()}
+          {this.resultsCount() == 0 && <span>{i18n.t("no_results")}</span>}
+          <Paginator page={this.state.page} onChange={this.handlePageChange} />
+        </div>
       </div>
     );
   }

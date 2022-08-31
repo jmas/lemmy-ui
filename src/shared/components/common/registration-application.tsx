@@ -52,7 +52,10 @@ export class RegistrationApplication extends Component<
           <MomentTime showAgo published={ra.published} updated={None} />
         </div>
         <div>{i18n.t("answer")}:</div>
-        <div className="md-div" dangerouslySetInnerHTML={mdToHtml(ra.answer)} />
+        <div
+          className="uj-md-text"
+          dangerouslySetInnerHTML={mdToHtml(ra.answer)}
+        />
 
         {a.admin.match({
           some: admin => (
@@ -73,7 +76,7 @@ export class RegistrationApplication extends Component<
                       <div>
                         {i18n.t("deny_reason")}:{" "}
                         <div
-                          className="md-div d-inline-flex"
+                          className="uj-md-text d-inline-flex"
                           dangerouslySetInnerHTML={mdToHtml(deny_reason)}
                         />
                       </div>

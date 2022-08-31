@@ -157,6 +157,15 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               this.showBody &&
               post.embed_title.isSome() && <MetadataCard post={post} />}
             {this.showBody && this.body()}
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                {this.commentsLine(false)}
+                {this.userActionsLine()}
+                {this.duplicatesLine()}
+                {this.removeAndBanDialogs()}
+              </div>
+              {!this.props.viewOnly && this.voteBar()}
+            </div>
           </>
         ) : (
           <div class="col-12">
@@ -178,11 +187,14 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   body() {
     return this.props.post_view.post.body.match({
       some: body => (
-        <div class="col-12 card my-2 p-2">
+        <div class="mb-3">
           {this.state.viewSource ? (
             <pre>{body}</pre>
           ) : (
-            <div className="md-div" dangerouslySetInnerHTML={mdToHtml(body)} />
+            <div
+              className="uj-md-text"
+              dangerouslySetInnerHTML={mdToHtml(body)}
+            />
           )}
         </div>
       ),
@@ -298,7 +310,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             title={url.unwrap()}
             rel={relTags}
           >
-            <div class="thumbnail rounded bg-light d-flex justify-content-center uj-thumbnail">
+            <div class="thumbnail bg-light d-flex justify-content-center uj-thumbnail">
               <Icon icon="external-link" classes="d-flex align-items-center" />
             </div>
           </a>
@@ -311,7 +323,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           to={`/post/${post.id}`}
           title={i18n.t("comments")}
         >
-          <div class="thumbnail rounded bg-light d-flex justify-content-center uj-thumbnail">
+          <div class="thumbnail bg-light d-flex justify-content-center uj-thumbnail">
             <Icon icon="message-square" classes="d-flex align-items-center" />
           </div>
         </Link>
@@ -322,18 +334,22 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   createdLine() {
     let post_view = this.props.post_view;
     return (
-      <ul class="list-inline mb-1 text-muted small">
+      <ul class="list-inline mb-2 text-muted small">
         <li className="list-inline-item">
           <PersonListing person={post_view.creator} />
 
           {this.creatorIsMod_ && (
-            <span className="mx-1 badge badge-light">{i18n.t("mod")}</span>
+            <span className="mx-1 badge rounded-pill text-bg-light">
+              {i18n.t("mod")}
+            </span>
           )}
           {this.creatorIsAdmin_ && (
-            <span className="mx-1 badge badge-light">{i18n.t("admin")}</span>
+            <span className="mx-1 badge rounded-pill text-bg-light">
+              {i18n.t("admin")}
+            </span>
           )}
           {post_view.creator.bot_account && (
-            <span className="mx-1 badge badge-light">
+            <span className="mx-1 badge rounded-pill text-bg-light">
               {i18n.t("bot_account").toLowerCase()}
             </span>
           )}
@@ -403,30 +419,32 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
 
   voteBar() {
     return (
-      <div className={`vote-bar col-1 pe-0 small text-center`}>
+      <div className={`vote-bar d-flex`}>
         <button
-          className={`btn-animate btn btn-link p-0 ${
+          className={`btn-animate btn btn-link d-flex align-items-center ${
             this.state.my_vote.unwrapOr(0) == 1 ? "text-info" : "text-muted"
           }`}
           onClick={this.handlePostLike}
           data-tippy-content={i18n.t("upvote")}
           aria-label={i18n.t("upvote")}
         >
-          <Icon icon="arrow-up1" classes="upvote" />
+          <Icon icon="arrow-up1" />
         </button>
-        {showScores() ? (
-          <div
-            class={`unselectable pointer font-weight-bold text-muted px-1`}
-            data-tippy-content={this.pointsTippy}
-          >
-            {numToSI(this.state.score)}
-          </div>
-        ) : (
-          <div class="p-1"></div>
-        )}
+        <div class="d-flex align-items-center">
+          {showScores() ? (
+            <div
+              class={`unselectable pointer font-weight-bold text-muted px-1`}
+              data-tippy-content={this.pointsTippy}
+            >
+              {numToSI(this.state.score)}
+            </div>
+          ) : (
+            <div class="p-1"></div>
+          )}
+        </div>
         {this.props.enableDownvotes && (
           <button
-            className={`btn-animate btn btn-link p-0 ${
+            className={`btn-animate btn btn-link d-flex align-items-center ${
               this.state.my_vote.unwrapOr(0) == -1
                 ? "text-danger"
                 : "text-muted"
@@ -435,7 +453,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             data-tippy-content={i18n.t("downvote")}
             aria-label={i18n.t("downvote")}
           >
-            <Icon icon="arrow-down1" classes="downvote" />
+            <Icon icon="arrow-down1" />
           </button>
         )}
       </div>
@@ -446,7 +464,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     let post = this.props.post_view.post;
     return (
       <div className="post-title overflow-hidden">
-        <h5 class="fw-semibold">
+        <h5 class="fw-semibold my-2">
           {post.url.match({
             some: url => (
               <a
@@ -617,7 +635,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   get commentsButton() {
     let post_view = this.props.post_view;
     return (
-      <button class="btn btn-link text-muted py-0 pl-0">
+      <button class="btn btn-link text-muted py-0 ps-0">
         <Link
           className="text-muted"
           title={i18n.t("number_of_comments", {
@@ -705,7 +723,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   get crossPostButton() {
     return (
       <Link
-        className="btn btn-link btn-animate text-muted py-0"
+        className="btn btn-link btn-animate text-muted py-0 d-flex align-items-center"
         to={`/create_post${this.crossPostParams}`}
         title={i18n.t("cross_post")}
       >
@@ -1188,7 +1206,9 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     return (
       !this.showBody &&
       post.body.match({
-        some: body => <div className="md-div mb-1 preview-lines">{body}</div>,
+        some: body => (
+          <div className="uj-md-text mb-1 preview-lines">{body}</div>
+        ),
         none: <></>,
       })
     );
@@ -1221,12 +1241,17 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         <div class="d-none d-sm-block">
           {this.createdLine()}
           {this.postTitleLine()}
-          {this.commentsLine()}
-          {this.duplicatesLine()}
-          {this.thumbnail()}
-          {!this.props.viewOnly && this.voteBar()}
-          {this.userActionsLine()}
-          {this.removeAndBanDialogs()}
+
+          {/* {this.commentsLine()} */}
+          {/* {this.duplicatesLine()} */}
+          <div
+            class="my-3"
+            style={{ "margin-left": "-1em", "margin-right": "-1em" }}
+          >
+            {this.thumbnail()}
+          </div>
+          {/* {this.userActionsLine()} */}
+          {/* {this.removeAndBanDialogs()} */}
         </div>
       </>
     );

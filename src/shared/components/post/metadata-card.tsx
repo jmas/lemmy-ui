@@ -58,7 +58,7 @@ export class MetadataCard extends Component<
                           {post.embed_description.match({
                             some: desc => (
                               <div
-                                className="card-text small text-muted md-div"
+                                className="card-text small text-muted uj-md-text"
                                 dangerouslySetInnerHTML={{
                                   __html: desc,
                                 }}

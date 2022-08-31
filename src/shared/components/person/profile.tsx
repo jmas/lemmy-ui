@@ -429,12 +429,12 @@ export class Profile extends Component<any, ProfileState> {
                         </li>
                       )}
                       {pv.person.admin && (
-                        <li className="list-inline-item badge badge-light">
+                        <li className="list-inline-item badge rounded-pill text-bg-light">
                           {i18n.t("admin")}
                         </li>
                       )}
                       {pv.person.bot_account && (
-                        <li className="list-inline-item badge badge-light">
+                        <li className="list-inline-item badge rounded-pill text-bg-light">
                           {i18n.t("bot_account").toLowerCase()}
                         </li>
                       )}
@@ -523,7 +523,7 @@ export class Profile extends Component<any, ProfileState> {
                   some: bio => (
                     <div className="d-flex align-items-center mb-2">
                       <div
-                        className="md-div"
+                        className="uj-md-text"
                         dangerouslySetInnerHTML={mdToHtml(bio)}
                       />
                     </div>
@@ -532,13 +532,13 @@ export class Profile extends Component<any, ProfileState> {
                 })}
                 <div>
                   <ul class="list-inline mb-2">
-                    <li className="list-inline-item badge badge-light">
+                    <li className="list-inline-item badge rounded-pill text-bg-light">
                       {i18n.t("number_of_posts", {
                         count: pv.counts.post_count,
                         formattedCount: numToSI(pv.counts.post_count),
                       })}
                     </li>
-                    <li className="list-inline-item badge badge-light">
+                    <li className="list-inline-item badge rounded-pill text-bg-light">
                       {i18n.t("number_of_comments", {
                         count: pv.counts.comment_count,
                         formattedCount: numToSI(pv.counts.comment_count),

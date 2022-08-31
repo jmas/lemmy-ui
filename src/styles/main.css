@@ -99,10 +99,6 @@
   border-top: 2px solid var(--dark);
 }
 
-.vote-bar {
-  margin-top: -6.5px;
-}
-
 .post-title {
   line-height: 1;
 }

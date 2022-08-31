@@ -327,21 +327,34 @@ export class Home extends Component<any, HomeState> {
           <div class="uj-layout-container">
             <aside class="uj-column">
               <div class="d-grid gap-2 col-12">
-                <button class="btn btn-link text-start bg-white" type="button">
-                  Популярне
-                </button>
-                <button class="btn btn-link text-start" type="button">
-                  Свіже
-                </button>
-                <button class="btn btn-link text-start" type="button">
-                  Моя стрічка
-                </button>
-                <button class="btn btn-link text-start" type="button">
-                  Збережені
-                </button>
-                <button class="btn btn-link text-start" type="button">
-                  Спільноти
-                </button>
+                <a
+                  href="/home/data_type/Post/listing_type/Subscribed/sort/Hot/page/1"
+                  class="btn btn-link text-start bg-white"
+                  type="button"
+                >
+                  {i18n.t("hot")}
+                </a>
+                <a
+                  href="/home/data_type/Post/listing_type/Subscribed/sort/New/page/1"
+                  class="btn btn-link text-start"
+                >
+                  {i18n.t("new")}
+                </a>
+                <a
+                  href="/home/data_type/Post/listing_type/Subscribed/sort/Active/page/1"
+                  class="btn btn-link text-start"
+                >
+                  {i18n.t("subscribed")}
+                </a>
+                <a
+                  href="/u/lemmy/view/Saved/sort/New/page/1"
+                  class="btn btn-link text-start"
+                >
+                  {i18n.t("saved")}
+                </a>
+                <a href="/communities" class="btn btn-link text-start">
+                  {i18n.t("communities")}
+                </a>
               </div>
             </aside>
 
@@ -367,6 +380,7 @@ export class Home extends Component<any, HomeState> {
 
   mobileView() {
     let siteRes = this.state.siteRes;
+
     return (
       <div class="row">
         <div class="col-12">
@@ -386,6 +400,7 @@ export class Home extends Component<any, HomeState> {
               />
             </button>
           )}
+
           <button
             class="btn btn-secondary d-inline-block mb-2 me-3"
             onClick={linkEvent(this, this.handleShowTrendingMobile)}
@@ -398,6 +413,7 @@ export class Home extends Component<any, HomeState> {
               classes="icon-inline"
             />
           </button>
+
           <button
             class="btn btn-secondary d-inline-block mb-2 me-3"
             onClick={linkEvent(this, this.handleShowSidebarMobile)}
@@ -410,6 +426,7 @@ export class Home extends Component<any, HomeState> {
               classes="icon-inline"
             />
           </button>
+
           {this.state.showSidebarMobile &&
             siteRes.site_view.match({
               some: siteView => (
@@ -423,13 +440,21 @@ export class Home extends Component<any, HomeState> {
               ),
               none: <></>,
             })}
+
           {this.state.showTrendingMobile && (
-            <div class="col-12 card mb-3">
+            <div
+              class="col-12 card mb-3"
+              style={{ "--bs-card-bg": "rgba(255,255,255,0.25)" }}
+            >
               <div class="card-body">{this.trendingCommunities()}</div>
             </div>
           )}
+
           {this.state.showSubscribedMobile && (
-            <div class="col-12 card mb-3">
+            <div
+              class="col-12 card mb-3"
+              style={{ "--bs-card-bg": "rgba(255,255,255,0.25)" }}
+            >
               <div class="card-body">{this.subscribedCommunities()}</div>
             </div>
           )}
@@ -444,13 +469,17 @@ export class Home extends Component<any, HomeState> {
       <div>
         {!this.state.loading && (
           <div>
-            <div class="card mb-3">
+            <div
+              class="card mb-3"
+              style={{ "--bs-card-bg": "rgba(255,255,255,0.25)" }}
+            >
               <div class="card-body">
                 {this.trendingCommunities()}
-                {this.createCommunityButton()}
-                {this.exploreCommunitiesButton()}
+                {/* {this.createCommunityButton()} */}
+                {/* {this.exploreCommunitiesButton()} */}
               </div>
             </div>
+
             {siteRes.site_view.match({
               some: siteView => (
                 <SiteSidebar
@@ -463,8 +492,12 @@ export class Home extends Component<any, HomeState> {
               ),
               none: <></>,
             })}
+
             {this.hasFollows && (
-              <div class="card mb-3">
+              <div
+                class="card mb-3"
+                style={{ "--bs-card-bg": "rgba(255,255,255,0.25)" }}
+              >
                 <div class="card-body">{this.subscribedCommunities()}</div>
               </div>
             )}
@@ -501,6 +534,7 @@ export class Home extends Component<any, HomeState> {
             </Link>
           </T>
         </h5>
+
         <ul class="list-inline mb-0">
           {this.state.trendingCommunities.map(cv => (
             <li class="list-inline-item d-inline-block">
@@ -535,6 +569,7 @@ export class Home extends Component<any, HomeState> {
             )}
           </button>
         </h5>
+
         {!this.state.subscribedCollapsed && (
           <ul class="list-inline mb-0">
             {UserService.Instance.myUserInfo
@@ -614,52 +649,72 @@ export class Home extends Component<any, HomeState> {
       .map(auth => `/feeds/front/${auth}.xml?sort=${this.state.sort}`);
 
     return (
-      <div className="mb-3">
-        <span class="me-3">
-          <DataTypeSelect
-            type_={this.state.dataType}
-            onChange={this.handleDataTypeChange}
-          />
-        </span>
-        {/* <span class="me-3">
-          <ListingTypeSelect
-            type_={this.state.listingType}
-            showLocal={showLocal(this.isoData)}
-            showSubscribed
-            onChange={this.handleListingTypeChange}
-          />
-        </span> */}
-        <span class="me-2">
-          <SortSelect sort={this.state.sort} onChange={this.handleSortChange} />
-        </span>
-        {this.state.listingType == ListingType.All && (
-          <>
-            <a href={allRss} rel={relTags} title="RSS">
-              <Icon icon="rss" classes="text-muted small" />
-            </a>
-            <link rel="alternate" type="application/atom+xml" href={allRss} />
-          </>
-        )}
-        {this.state.listingType == ListingType.Local && (
-          <>
-            <a href={localRss} rel={relTags} title="RSS">
-              <Icon icon="rss" classes="text-muted small" />
-            </a>
-            <link rel="alternate" type="application/atom+xml" href={localRss} />
-          </>
-        )}
-        {this.state.listingType == ListingType.Subscribed &&
-          frontRss.match({
-            some: rss => (
-              <>
-                <a href={rss} title="RSS" rel={relTags}>
-                  <Icon icon="rss" classes="text-muted small" />
-                </a>
-                <link rel="alternate" type="application/atom+xml" href={rss} />
-              </>
-            ),
-            none: <></>,
-          })}
+      <div className="d-flex mb-3">
+        <div class="flex-fill">
+          <span class="me-3">
+            <DataTypeSelect
+              type_={this.state.dataType}
+              onChange={this.handleDataTypeChange}
+            />
+          </span>
+
+          {/* <span class="me-3">
+            <ListingTypeSelect
+              type_={this.state.listingType}
+              showLocal={showLocal(this.isoData)}
+              showSubscribed
+              onChange={this.handleListingTypeChange}
+            />
+          </span> */}
+        </div>
+
+        <div class="d-flex align-items-center justify-content-end">
+          {this.state.listingType == ListingType.All && (
+            <>
+              <a href={allRss} rel={relTags} title="RSS">
+                <Icon icon="rss" classes="text-muted small" />
+              </a>
+              <link rel="alternate" type="application/atom+xml" href={allRss} />
+            </>
+          )}
+
+          {this.state.listingType == ListingType.Local && (
+            <>
+              <a href={localRss} rel={relTags} title="RSS">
+                <Icon icon="rss" classes="text-muted small" />
+              </a>
+              <link
+                rel="alternate"
+                type="application/atom+xml"
+                href={localRss}
+              />
+            </>
+          )}
+
+          {this.state.listingType == ListingType.Subscribed &&
+            frontRss.match({
+              some: rss => (
+                <>
+                  <a href={rss} title="RSS" rel={relTags}>
+                    <Icon icon="rss" classes="text-muted small" />
+                  </a>
+                  <link
+                    rel="alternate"
+                    type="application/atom+xml"
+                    href={rss}
+                  />
+                </>
+              ),
+              none: <></>,
+            })}
+
+          <span class="ms-3">
+            <SortSelect
+              sort={this.state.sort}
+              onChange={this.handleSortChange}
+            />
+          </span>
+        </div>
       </div>
     );
   }

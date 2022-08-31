@@ -237,22 +237,22 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                 <Icon icon="shield" inline classes={`text-danger me-2`} />
               )}
               {isMod_ && (
-                <div className="badge badge-light d-none d-sm-inline me-2">
+                <div className="badge rounded-pill text-bg-light d-none d-sm-inline me-2">
                   {i18n.t("mod")}
                 </div>
               )}
               {isAdmin_ && (
-                <div className="badge badge-light d-none d-sm-inline me-2">
+                <div className="badge rounded-pill text-bg-light d-none d-sm-inline me-2">
                   {i18n.t("admin")}
                 </div>
               )}
               {this.isPostCreator && (
-                <div className="badge badge-light d-none d-sm-inline me-2">
+                <div className="badge rounded-pill text-bg-light d-none d-sm-inline me-2">
                   {i18n.t("creator")}
                 </div>
               )}
               {cv.creator.bot_account && (
-                <div className="badge badge-light d-none d-sm-inline me-2">
+                <div className="badge rounded-pill text-bg-light d-none d-sm-inline me-2">
                   {i18n.t("bot_account").toLowerCase()}
                 </div>
               )}
@@ -329,7 +329,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                   <pre>{this.commentUnlessRemoved}</pre>
                 ) : (
                   <div
-                    className="md-div"
+                    className="uj-md-text"
                     dangerouslySetInnerHTML={mdToHtml(
                       this.commentUnlessRemoved
                     )}

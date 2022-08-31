@@ -143,7 +143,7 @@ export class MarkdownTextArea extends Component<
               this.state.content.match({
                 some: content => (
                   <div
-                    className="card card-body md-div"
+                    className="card card-body uj-md-text"
                     dangerouslySetInnerHTML={mdToHtml(content)}
                   />
                 ),

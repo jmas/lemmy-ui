@@ -91,7 +91,10 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
   sidebar() {
     return (
       <div>
-        <div class="card mb-3">
+        <div
+          class="card mb-3"
+          style={{ "--bs-card-bg": "rgba(255,255,255,0.25)" }}
+        >
           <div class="card-body">
             {this.communityTitle()}
             {this.adminButtons()}
@@ -99,7 +102,10 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
             {this.canPost && this.createPost()}
           </div>
         </div>
-        <div class="card mb-3">
+        <div
+          class="card mb-3"
+          style={{ "--bs-card-bg": "rgba(255,255,255,0.25)" }}
+        >
           <div class="card-body">
             {this.description()}
             {this.badges()}
@@ -169,14 +175,14 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
     let counts = community_view.counts;
     return (
       <ul class="my-1 list-inline">
-        <li className="list-inline-item badge badge-secondary">
+        <li className="list-inline-item badge rounded-pill text-bg-light">
           {i18n.t("number_online", {
             count: this.props.online,
             formattedCount: numToSI(this.props.online),
           })}
         </li>
         <li
-          className="list-inline-item badge badge-secondary pointer"
+          className="list-inline-item badge rounded-pill text-bg-light pointer"
           data-tippy-content={i18n.t("active_users_in_the_last_day", {
             count: counts.users_active_day,
             formattedCount: counts.users_active_day,
@@ -189,7 +195,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
           / {i18n.t("day")}
         </li>
         <li
-          className="list-inline-item badge badge-secondary pointer"
+          className="list-inline-item badge rounded-pill text-bg-light pointer"
           data-tippy-content={i18n.t("active_users_in_the_last_week", {
             count: counts.users_active_week,
             formattedCount: counts.users_active_week,
@@ -202,7 +208,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
           / {i18n.t("week")}
         </li>
         <li
-          className="list-inline-item badge badge-secondary pointer"
+          className="list-inline-item badge rounded-pill text-bg-light pointer"
           data-tippy-content={i18n.t("active_users_in_the_last_month", {
             count: counts.users_active_month,
             formattedCount: counts.users_active_month,
@@ -215,7 +221,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
           / {i18n.t("month")}
         </li>
         <li
-          className="list-inline-item badge badge-secondary pointer"
+          className="list-inline-item badge rounded-pill text-bg-light pointer"
           data-tippy-content={i18n.t("active_users_in_the_last_six_months", {
             count: counts.users_active_half_year,
             formattedCount: counts.users_active_half_year,
@@ -227,19 +233,19 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
           })}{" "}
           / {i18n.t("number_of_months", { count: 6, formattedCount: 6 })}
         </li>
-        <li className="list-inline-item badge badge-secondary">
+        <li className="list-inline-item badge rounded-pill text-bg-light">
           {i18n.t("number_of_subscribers", {
             count: counts.subscribers,
             formattedCount: numToSI(counts.subscribers),
           })}
         </li>
-        <li className="list-inline-item badge badge-secondary">
+        <li className="list-inline-item badge rounded-pill text-bg-light">
           {i18n.t("number_of_posts", {
             count: counts.posts,
             formattedCount: numToSI(counts.posts),
           })}
         </li>
-        <li className="list-inline-item badge badge-secondary">
+        <li className="list-inline-item badge rounded-pill text-bg-light">
           {i18n.t("number_of_comments", {
             count: counts.comments,
             formattedCount: numToSI(counts.comments),
@@ -247,7 +253,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
         </li>
         <li className="list-inline-item">
           <Link
-            className="badge badge-primary"
+            className="badge rounded-pill text-bg-warning"
             to={`/modlog/community/${this.props.community_view.community.id}`}
           >
             {i18n.t("modlog")}
@@ -324,7 +330,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
     let description = this.props.community_view.community.description;
     return description.match({
       some: desc => (
-        <div className="md-div" dangerouslySetInnerHTML={mdToHtml(desc)} />
+        <div className="uj-md-text" dangerouslySetInnerHTML={mdToHtml(desc)} />
       ),
       none: <></>,
     });

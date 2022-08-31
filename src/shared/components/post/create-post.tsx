@@ -124,7 +124,7 @@ export class CreatePost extends Component<any, CreatePostState> {
   render() {
     return (
       <div class="container">
-        <div class="card p-3">
+        <div class="card p-5">
           <HtmlTags
             title={this.documentTitle}
             path={this.context.router.route.match.url}

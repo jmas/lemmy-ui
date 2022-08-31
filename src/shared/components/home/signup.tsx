@@ -268,7 +268,7 @@ export class Signup extends Component<any, State> {
                   {siteView.site.application_question.match({
                     some: question => (
                       <div
-                        className="md-div"
+                        className="uj-md-text"
                         dangerouslySetInnerHTML={mdToHtml(question)}
                       />
                     ),

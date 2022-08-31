@@ -110,7 +110,7 @@ export class PrivateMessage extends Component<
                 <pre>{this.messageUnlessRemoved}</pre>
               ) : (
                 <div
-                  className="md-div"
+                  className="uj-md-text"
                   dangerouslySetInnerHTML={mdToHtml(this.messageUnlessRemoved)}
                 />
               )}

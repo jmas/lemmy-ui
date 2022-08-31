@@ -1,0 +1,13 @@
+.choices__inner {
+  border-radius: $border-radius;
+}
+
+.choices[data-type*="select-one"] .choices__inner {
+  min-height: 0;
+  font-size: inherit;
+  padding: $spacer * 0.25;
+}
+
+.choices__list[aria-expanded] {
+  padding: $spacer * 0.25;
+}

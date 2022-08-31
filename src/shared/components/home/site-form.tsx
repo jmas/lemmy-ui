@@ -460,11 +460,11 @@ export class SiteForm extends Component<SiteFormProps, SiteFormState> {
               </div>
             </div>
           </div>
-          <div class="form-group row">
+          <div class="form-group row mb-0">
             <div class="col-12">
               <button
                 type="submit"
-                class="btn btn-secondary me-2"
+                class="btn btn-primary me-2"
                 disabled={this.state.loading}
               >
                 {this.state.loading ? (
