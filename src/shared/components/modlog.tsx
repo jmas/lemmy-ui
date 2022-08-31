@@ -593,11 +593,11 @@ export class Modlog extends Component<any, ModlogState> {
               })}
               <span>{i18n.t("modlog")}</span>
             </h5>
-            <form className="form-inline mr-2">
+            <form className="form-inline me-2">
               <select
                 value={this.state.filter_action}
                 onChange={linkEvent(this, this.handleFilterActionChange)}
-                className="custom-select col-4 mb-2"
+                className="form-select col-4 mb-2"
                 aria-label="action"
               >
                 <option disabled aria-hidden="true">
@@ -640,6 +640,7 @@ export class Modlog extends Component<any, ModlogState> {
                   !site_view.site.hide_modlog_mod_names.unwrapOr(false) && (
                     <select
                       id="filter-mod"
+                      class="form-select"
                       value={toUndefined(this.state.filter_mod)}
                     >
                       <option>{i18n.t("filter_by_mod")}</option>
@@ -649,6 +650,7 @@ export class Modlog extends Component<any, ModlogState> {
               })}
               <select
                 id="filter-user"
+                class="form-select"
                 value={toUndefined(this.state.filter_user)}
               >
                 <option>{i18n.t("filter_by_user")}</option>

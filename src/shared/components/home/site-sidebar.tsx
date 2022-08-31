@@ -38,7 +38,7 @@ export class SiteSidebar extends Component<SiteSidebarProps, SiteSidebarState> {
   render() {
     let site = this.props.site;
     return (
-      <div class="card border-secondary mb-3">
+      <div class="card mb-3">
         <div class="card-body">
           {!this.state.showEdit ? (
             <div>

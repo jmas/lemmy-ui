@@ -21,7 +21,7 @@ import { UserService, WebSocketService } from "../../services";
 import {
   amAdmin,
   auth,
-  donateLemmyUrl,
+  capitalizeFirstLetter,
   isBrowser,
   notifyComment,
   notifyPrivateMessage,
@@ -144,15 +144,15 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
   // TODO class active corresponding to current page
   navbar() {
     return (
-      <nav class="navbar navbar-expand-md navbar-light shadow-sm p-0 px-3">
-        <div class="container">
-          {this.props.siteRes.site_view.match({
+      <nav class="navbar navbar-expand-lg border-bottom navbar-dark bg-dark uj-navbar">
+        <div class="container-fluid">
+          {/* {this.props.siteRes.site_view.match({
             some: siteView => (
               <NavLink
                 to="/"
                 onMouseUp={linkEvent(this, this.handleHideExpandNavbar)}
                 title={siteView.site.description.unwrapOr(siteView.site.name)}
-                className="d-flex align-items-center navbar-brand mr-md-3"
+                className="d-flex align-items-center navbar-brand me-md-3"
               >
                 {siteView.site.icon.match({
                   some: icon =>
@@ -163,10 +163,20 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
               </NavLink>
             ),
             none: <></>,
-          })}
+          })} */}
+
+          <a class="navbar-brand" href="/">
+            <img src="/static/assets/images/logo.svg" />
+          </a>
+
           {UserService.Instance.myUserInfo.isSome() && (
             <>
-              <ul class="navbar-nav ml-auto">
+              <ul
+                class="navbar-nav"
+                style={{
+                  "--bs-navbar-color": "#fff",
+                }}
+              >
                 <li className="nav-item">
                   <NavLink
                     to="/inbox"
@@ -186,8 +196,14 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                   </NavLink>
                 </li>
               </ul>
+
               {this.moderatesSomething && (
-                <ul class="navbar-nav ml-1">
+                <ul
+                  class="navbar-nav"
+                  style={{
+                    "--bs-navbar-color": "#fff",
+                  }}
+                >
                   <li className="nav-item">
                     <NavLink
                       to="/reports"
@@ -208,8 +224,14 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                   </li>
                 </ul>
               )}
+
               {this.amAdmin && (
-                <ul class="navbar-nav ml-1">
+                <ul
+                  class="navbar-nav"
+                  style={{
+                    "--bs-navbar-color": "#fff",
+                  }}
+                >
                   <li className="nav-item">
                     <NavLink
                       to="/registration_applications"
@@ -234,19 +256,30 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
               )}
             </>
           )}
-          <button
-            class="navbar-toggler border-0 p-1"
-            type="button"
-            aria-label="menu"
-            onClick={linkEvent(this, this.handleToggleExpandNavbar)}
-            data-tippy-content={i18n.t("expand_here")}
+
+          <ul
+            class="navbar-nav"
+            style={{
+              "--bs-navbar-color": "#fff",
+            }}
           >
-            <Icon icon="menu" />
-          </button>
+            <li className="nav-item">
+              <button
+                class="navbar-toggler border-0 p-1"
+                type="button"
+                aria-label="menu"
+                onClick={linkEvent(this, this.handleToggleExpandNavbar)}
+                data-tippy-content={i18n.t("expand_here")}
+              >
+                <Icon icon="menu" />
+              </button>
+            </li>
+          </ul>
+
           <div
             className={`${!this.state.expanded && "collapse"} navbar-collapse`}
           >
-            <ul class="navbar-nav my-2 mr-auto">
+            {/*<ul class="navbar-nav ms-md-auto">
               <li class="nav-item">
                 <NavLink
                   to="/communities"
@@ -282,18 +315,90 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                   </NavLink>
                 </li>
               )}
-              <li class="nav-item">
-                <a
-                  className="nav-link"
-                  title={i18n.t("support_lemmy")}
-                  href={donateLemmyUrl}
+              </ul>*/}
+
+            <ul
+              class="navbar-nav"
+              style={{
+                "--bs-nav-link-color": "#fff",
+              }}
+            >
+              <li class="nav-item dropdown">
+                <button
+                  class="btn btn-primary btn-icon dropdown-toggle"
+                  onClick={linkEvent(this, this.handleToggleDropdown)}
+                  id="navbarDropdown"
+                  role="button"
+                  aria-expanded="false"
+                  style={{
+                    "--bs-btn-color": "#000",
+                    "--bs-btn-bg": "#fff",
+                  }}
                 >
-                  <Icon icon="heart" classes="small" />
-                </a>
+                  <Icon icon="plus" />
+                  <span>{capitalizeFirstLetter(i18n.t("create"))}</span>
+                </button>
+                <ul
+                  class="dropdown-menu dropdown-menu-end show"
+                  onMouseLeave={linkEvent(this, this.handleToggleDropdown)}
+                  style={{
+                    "--bs-nav-link-color": "#000",
+                    "--bs-nav-link-hover-color": "#000",
+                    "--bs-navbar-active-color": "#000",
+                    "white-space": "nowrap",
+                  }}
+                >
+                  <>
+                    {/*<li class="nav-item">
+                      <NavLink
+                        to="/communities"
+                        className="nav-link"
+                        onMouseUp={linkEvent(this, this.handleHideExpandNavbar)}
+                        title={i18n.t("communities")}
+                      >
+                        {i18n.t("communities")}
+                      </NavLink>
+                    </li>*/}
+                    <li class="nav-item">
+                      <NavLink
+                        to={{
+                          pathname: "/create_post",
+                          prevPath: this.currentLocation,
+                        }}
+                        className="nav-link"
+                        onMouseUp={linkEvent(this, this.handleHideExpandNavbar)}
+                        title={i18n.t("create_post")}
+                      >
+                        {i18n.t("create_post")}
+                      </NavLink>
+                    </li>
+                    {this.canCreateCommunity && (
+                      <li class="nav-item">
+                        <NavLink
+                          to="/create_community"
+                          className="nav-link"
+                          onMouseUp={linkEvent(
+                            this,
+                            this.handleHideExpandNavbar
+                          )}
+                          title={i18n.t("create_community")}
+                        >
+                          {i18n.t("create_community")}
+                        </NavLink>
+                      </li>
+                    )}
+                  </>
+                </ul>
               </li>
             </ul>
-            <ul class="navbar-nav my-2">
-              {this.amAdmin && (
+
+            {this.amAdmin && (
+              <ul
+                class="navbar-nav ms-md-auto"
+                style={{
+                  "--bs-nav-link-color": "#fff",
+                }}
+              >
                 <li className="nav-item">
                   <NavLink
                     to="/admin"
@@ -304,20 +409,19 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                     <Icon icon="settings" />
                   </NavLink>
                 </li>
-              )}
-            </ul>
+              </ul>
+            )}
+
             {!this.context.router.history.location.pathname.match(
               /^\/search/
             ) && (
               <form
-                class="form-inline mr-2"
+                class="form-inline me-2"
                 onSubmit={linkEvent(this, this.handleSearchSubmit)}
               >
                 <input
                   id="search-input"
-                  class={`form-control mr-0 search-input ${
-                    this.state.toggleSearch ? "show-input" : "hide-input"
-                  }`}
+                  class="form-control uj-navbar-searchInput"
                   onInput={linkEvent(this, this.handleSearchParam)}
                   value={this.state.searchParam}
                   ref={this.searchTextField}
@@ -325,23 +429,28 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                   placeholder={i18n.t("search")}
                   onBlur={linkEvent(this, this.handleSearchBlur)}
                 ></input>
-                <label class="sr-only" htmlFor="search-input">
+                <label class="visually-hidden d-none" htmlFor="search-input">
                   {i18n.t("search")}
                 </label>
                 <button
                   name="search-btn"
                   onClick={linkEvent(this, this.handleSearchBtn)}
-                  class="px-1 btn btn-link"
-                  style="color: var(--gray)"
+                  class="px-1 btn btn-link d-none"
                   aria-label={i18n.t("search")}
                 >
                   <Icon icon="search" />
                 </button>
               </form>
             )}
+
             {UserService.Instance.myUserInfo.isSome() ? (
               <>
-                <ul class="navbar-nav my-2">
+                <ul
+                  class="navbar-nav"
+                  style={{
+                    "--bs-nav-link-color": "#fff",
+                  }}
+                >
                   <li className="nav-item">
                     <NavLink
                       className="nav-link"
@@ -354,7 +463,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                     >
                       <Icon icon="bell" />
                       {this.state.unreadInboxCount > 0 && (
-                        <span class="ml-1 badge badge-light">
+                        <span class="ms-1 badge badge-light">
                           {numToSI(this.state.unreadInboxCount)}
                         </span>
                       )}
@@ -362,7 +471,12 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                   </li>
                 </ul>
                 {this.moderatesSomething && (
-                  <ul class="navbar-nav my-2">
+                  <ul
+                    class="navbar-nav"
+                    style={{
+                      "--bs-nav-link-color": "#fff",
+                    }}
+                  >
                     <li className="nav-item">
                       <NavLink
                         className="nav-link"
@@ -375,7 +489,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                       >
                         <Icon icon="shield" />
                         {this.state.unreadReportCount > 0 && (
-                          <span class="ml-1 badge badge-light">
+                          <span class="ms-1 badge badge-light">
                             {numToSI(this.state.unreadReportCount)}
                           </span>
                         )}
@@ -383,8 +497,14 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                     </li>
                   </ul>
                 )}
+
                 {this.amAdmin && (
-                  <ul class="navbar-nav my-2">
+                  <ul
+                    class="navbar-nav"
+                    style={{
+                      "--bs-nav-link-color": "#fff",
+                    }}
+                  >
                     <li className="nav-item">
                       <NavLink
                         to="/registration_applications"
@@ -411,7 +531,12 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                   .map(m => m.local_user_view.person)
                   .match({
                     some: person => (
-                      <ul class="navbar-nav">
+                      <ul
+                        class="navbar-nav"
+                        style={{
+                          "--bs-nav-link-color": "#fff",
+                        }}
+                      >
                         <li class="nav-item dropdown">
                           <button
                             class="nav-link btn btn-link dropdown-toggle"
@@ -433,46 +558,51 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                           </button>
                           {this.state.showDropdown && (
                             <div
-                              class="dropdown-content"
+                              class="dropdown-menu dropdown-menu-end show"
                               onMouseLeave={linkEvent(
                                 this,
                                 this.handleToggleDropdown
                               )}
+                              style={{
+                                "--bs-nav-link-color": "#000",
+                                "--bs-nav-link-hover-color": "#000",
+                                "--bs-navbar-active-color": "#000",
+                                right: 0,
+                              }}
                             >
-                              <li className="nav-item">
+                              <li>
                                 <NavLink
                                   to={`/u/${person.name}`}
-                                  className="nav-link"
+                                  class="dropdown-item nav-link btn-icon"
                                   title={i18n.t("profile")}
                                 >
-                                  <Icon icon="user" classes="mr-1" />
-                                  {i18n.t("profile")}
+                                  <Icon icon="user" />
+                                  <span class="ms-2">{i18n.t("profile")}</span>
                                 </NavLink>
                               </li>
-                              <li className="nav-item">
+                              <li>
                                 <NavLink
                                   to="/settings"
-                                  className="nav-link"
+                                  class="dropdown-item nav-link btn-icon"
                                   title={i18n.t("settings")}
                                 >
-                                  <Icon icon="settings" classes="mr-1" />
-                                  {i18n.t("settings")}
+                                  <Icon icon="settings" />
+                                  <span class="ms-2">{i18n.t("settings")}</span>
                                 </NavLink>
                               </li>
                               <li>
                                 <hr class="dropdown-divider" />
                               </li>
-                              <li className="nav-item">
+                              <li>
                                 <button
-                                  className="nav-link btn btn-link"
+                                  class="dropdown-item nav-link btn btn-link btn-icon rounded-0"
                                   onClick={linkEvent(
                                     this,
                                     this.handleLogoutClick
                                   )}
-                                  title="test"
                                 >
-                                  <Icon icon="log-out" classes="mr-1" />
-                                  {i18n.t("logout")}
+                                  <Icon icon="log-out" />
+                                  <span>{i18n.t("logout")}</span>
                                 </button>
                               </li>
                             </div>
@@ -484,7 +614,12 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                   })}
               </>
             ) : (
-              <ul class="navbar-nav my-2">
+              <ul
+                class="navbar-nav"
+                style={{
+                  "--bs-nav-link-color": "#fff",
+                }}
+              >
                 <li className="nav-item">
                   <NavLink
                     to="/login"

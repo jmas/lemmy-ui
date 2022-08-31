@@ -124,36 +124,38 @@ export class CreatePost extends Component<any, CreatePostState> {
   render() {
     return (
       <div class="container">
-        <HtmlTags
-          title={this.documentTitle}
-          path={this.context.router.route.match.url}
-          description={None}
-          image={None}
-        />
-        {this.state.loading ? (
-          <h5>
-            <Spinner large />
-          </h5>
-        ) : (
-          this.state.listCommunitiesResponse.match({
-            some: res => (
-              <div class="row">
-                <div class="col-12 col-lg-6 offset-lg-3 mb-4">
-                  <h5>{i18n.t("create_post")}</h5>
-                  <PostForm
-                    post_view={None}
-                    communities={Some(res.communities)}
-                    onCreate={this.handlePostCreate}
-                    params={Some(this.params)}
-                    enableDownvotes={enableDownvotes(this.state.siteRes)}
-                    enableNsfw={enableNsfw(this.state.siteRes)}
-                  />
+        <div class="card p-3">
+          <HtmlTags
+            title={this.documentTitle}
+            path={this.context.router.route.match.url}
+            description={None}
+            image={None}
+          />
+          {this.state.loading ? (
+            <h5>
+              <Spinner large />
+            </h5>
+          ) : (
+            this.state.listCommunitiesResponse.match({
+              some: res => (
+                <div class="row justify-content-center">
+                  <div class="col-12 col-lg-6">
+                    <h5>{i18n.t("create_post")}</h5>
+                    <PostForm
+                      post_view={None}
+                      communities={Some(res.communities)}
+                      onCreate={this.handlePostCreate}
+                      params={Some(this.params)}
+                      enableDownvotes={enableDownvotes(this.state.siteRes)}
+                      enableNsfw={enableNsfw(this.state.siteRes)}
+                    />
+                  </div>
                 </div>
-              </div>
-            ),
-            none: <></>,
-          })
-        )}
+              ),
+              none: <></>,
+            })
+          )}
+        </div>
       </div>
     );
   }

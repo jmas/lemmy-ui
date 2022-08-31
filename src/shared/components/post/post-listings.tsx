@@ -31,8 +31,8 @@ export class PostListings extends Component<PostListingsProps, any> {
     return (
       <div>
         {this.posts.length > 0 ? (
-          this.posts.map(post_view => (
-            <>
+          <div class="uj-post-list">
+            {this.posts.map(post_view => (
               <PostListing
                 post_view={post_view}
                 duplicates={Some(this.duplicatesMap.get(post_view.post.id))}
@@ -42,9 +42,8 @@ export class PostListings extends Component<PostListingsProps, any> {
                 enableDownvotes={this.props.enableDownvotes}
                 enableNsfw={this.props.enableNsfw}
               />
-              <hr class="my-3" />
-            </>
-          ))
+            ))}
+          </div>
         ) : (
           <>
             <div>{i18n.t("no_posts")}</div>

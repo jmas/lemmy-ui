@@ -34,7 +34,7 @@ export class MetadataCard extends Component<
             some: embedTitle =>
               post.url.match({
                 some: url => (
-                  <div class="card border-secondary mt-3 mb-2">
+                  <div class="card mt-3 mb-2">
                     <div class="row">
                       <div class="col-12">
                         <div class="card-body">
@@ -44,14 +44,14 @@ export class MetadataCard extends Component<
                                 {embedTitle}
                               </a>
                             </h5>,
-                            <span class="d-inline-block ml-2 mb-2 small text-muted">
+                            <span class="d-inline-block ms-2 mb-2 small text-muted">
                               <a
                                 class="text-muted font-italic"
                                 href={url}
                                 rel={relTags}
                               >
                                 {new URL(url).hostname}
-                                <Icon icon="external-link" classes="ml-1" />
+                                <Icon icon="external-link" classes="ms-1" />
                               </a>
                             </span>,
                           ]}

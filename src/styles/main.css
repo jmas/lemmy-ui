@@ -121,11 +121,6 @@
   fill: currentColor;
   vertical-align: middle;
   align-self: center;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -298,11 +293,6 @@ hr {
 pre {
   white-space: pre-wrap;
   word-break: keep-all;
-}
-
-.form-control.search-input {
-  float: right !important;
-  transition: width 0.2s ease-out 0s !important;
 }
 
 .show-input {

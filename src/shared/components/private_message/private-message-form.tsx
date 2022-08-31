@@ -161,7 +161,7 @@ export class PrivateMessageForm extends Component<
             <div class="offset-sm-2 col-sm-10">
               <button
                 type="submit"
-                class="btn btn-secondary mr-2"
+                class="btn btn-secondary me-2"
                 disabled={this.state.loading}
               >
                 {this.state.loading ? (

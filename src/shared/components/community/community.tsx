@@ -299,7 +299,7 @@ export class Community extends Component<any, State> {
                     {this.communityInfo()}
                     <div class="d-block d-md-none">
                       <button
-                        class="btn btn-secondary d-inline-block mb-2 mr-3"
+                        class="btn btn-secondary d-inline-block mb-2 me-3"
                         onClick={linkEvent(this, this.handleShowSidebarMobile)}
                       >
                         {i18n.t("sidebar")}{" "}
@@ -435,13 +435,13 @@ export class Community extends Component<any, State> {
     );
     return (
       <div class="mb-3">
-        <span class="mr-3">
+        <span class="me-3">
           <DataTypeSelect
             type_={this.state.dataType}
             onChange={this.handleDataTypeChange}
           />
         </span>
-        <span class="mr-2">
+        <span class="me-2">
           <SortSelect sort={this.state.sort} onChange={this.handleSortChange} />
         </span>
         {communityRss.match({

@@ -9,10 +9,25 @@ interface Props {
 
 export class Theme extends Component<Props> {
   render() {
+    return (
+      <Helmet>
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+        />
+        {/* <link
+          rel="stylesheet"
+          type="text/css"
+          href="/css/themes/litely.css"
+        /> */}
+      </Helmet>
+    );
+
     let user = UserService.Instance.myUserInfo;
-    let hasTheme = user
+    let hasTheme = false; /* user
       .map(m => m.local_user_view.local_user.theme !== "browser")
-      .unwrapOr(false);
+      .unwrapOr(false);*/
 
     if (hasTheme) {
       return (

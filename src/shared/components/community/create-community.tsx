@@ -56,29 +56,31 @@ export class CreateCommunity extends Component<any, CreateCommunityState> {
 
   render() {
     return (
-      <div class="container">
-        <HtmlTags
-          title={this.documentTitle}
-          path={this.context.router.route.match.url}
-          description={None}
-          image={None}
-        />
-        {this.state.loading ? (
-          <h5>
-            <Spinner large />
-          </h5>
-        ) : (
-          <div class="row">
-            <div class="col-12 col-lg-6 offset-lg-3 mb-4">
-              <h5>{i18n.t("create_community")}</h5>
-              <CommunityForm
-                community_view={None}
-                onCreate={this.handleCommunityCreate}
-                enableNsfw={enableNsfw(this.state.siteRes)}
-              />
+      <div class="container" style={{ "--bs-gutter-x": 0 }}>
+        <div class="card p-3">
+          <HtmlTags
+            title={this.documentTitle}
+            path={this.context.router.route.match.url}
+            description={None}
+            image={None}
+          />
+          {this.state.loading ? (
+            <h5>
+              <Spinner large />
+            </h5>
+          ) : (
+            <div class="row justify-content-center">
+              <div class="col-12 col-lg-6">
+                <h5 class="mb-3">{i18n.t("create_community")}</h5>
+                <CommunityForm
+                  community_view={None}
+                  onCreate={this.handleCommunityCreate}
+                  enableNsfw={enableNsfw(this.state.siteRes)}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     );
   }

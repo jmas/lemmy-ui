@@ -41,7 +41,7 @@ export class CommentSortSelect extends Component<
           name={this.id}
           value={this.state.sort}
           onChange={linkEvent(this, this.handleSortChange)}
-          class="custom-select w-auto mr-2 mb-2"
+          class="form-select w-auto me-2 mb-2"
           aria-label={i18n.t("sort_type")}
         >
           <option disabled aria-hidden="true">

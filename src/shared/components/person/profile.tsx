@@ -363,7 +363,7 @@ export class Profile extends Component<any, ProfileState> {
 
     return (
       <div className="mb-2">
-        <span class="mr-3">{this.viewRadios()}</span>
+        <span class="me-3">{this.viewRadios()}</span>
         <SortSelect
           sort={this.state.sort}
           onChange={this.handleSortChange}
@@ -446,7 +446,7 @@ export class Profile extends Component<any, ProfileState> {
                     UserService.Instance.myUserInfo.isSome() && (
                       <>
                         <a
-                          className={`d-flex align-self-start btn btn-secondary mr-2 ${
+                          className={`d-flex align-self-start btn btn-secondary me-2 ${
                             !pv.person.matrix_user_id && "invisible"
                           }`}
                           rel={relTags}
@@ -456,7 +456,7 @@ export class Profile extends Component<any, ProfileState> {
                         </a>
                         <Link
                           className={
-                            "d-flex align-self-start btn btn-secondary mr-2"
+                            "d-flex align-self-start btn btn-secondary me-2"
                           }
                           to={`/create_private_message/recipient/${pv.person.id}`}
                         >
@@ -465,7 +465,7 @@ export class Profile extends Component<any, ProfileState> {
                         {this.state.personBlocked ? (
                           <button
                             className={
-                              "d-flex align-self-start btn btn-secondary mr-2"
+                              "d-flex align-self-start btn btn-secondary me-2"
                             }
                             onClick={linkEvent(
                               pv.person.id,
@@ -477,7 +477,7 @@ export class Profile extends Component<any, ProfileState> {
                         ) : (
                           <button
                             className={
-                              "d-flex align-self-start btn btn-secondary mr-2"
+                              "d-flex align-self-start btn btn-secondary me-2"
                             }
                             onClick={linkEvent(
                               pv.person.id,
@@ -500,7 +500,7 @@ export class Profile extends Component<any, ProfileState> {
                     (!isBanned(pv.person) ? (
                       <button
                         className={
-                          "d-flex align-self-start btn btn-secondary mr-2"
+                          "d-flex align-self-start btn btn-secondary me-2"
                         }
                         onClick={linkEvent(this, this.handleModBanShow)}
                         aria-label={i18n.t("ban")}
@@ -510,7 +510,7 @@ export class Profile extends Component<any, ProfileState> {
                     ) : (
                       <button
                         className={
-                          "d-flex align-self-start btn btn-secondary mr-2"
+                          "d-flex align-self-start btn btn-secondary me-2"
                         }
                         onClick={linkEvent(this, this.handleModBanSubmit)}
                         aria-label={i18n.t("unban")}
@@ -557,7 +557,7 @@ export class Profile extends Component<any, ProfileState> {
                 </div>
                 <div className="d-flex align-items-center text-muted mb-2">
                   <Icon icon="cake" />
-                  <span className="ml-2">
+                  <span className="ms-2">
                     {i18n.t("cake_day_title")}{" "}
                     {moment
                       .utc(pv.person.published)
@@ -588,7 +588,7 @@ export class Profile extends Component<any, ProfileState> {
                   <input
                     type="text"
                     id="profile-ban-reason"
-                    class="form-control mr-2"
+                    class="form-control me-2"
                     placeholder={i18n.t("reason")}
                     value={toUndefined(this.state.banReason)}
                     onInput={linkEvent(this, this.handleModBanReasonChange)}
@@ -599,7 +599,7 @@ export class Profile extends Component<any, ProfileState> {
                   <input
                     type="number"
                     id={`mod-ban-expires`}
-                    class="form-control mr-2"
+                    class="form-control me-2"
                     placeholder={i18n.t("number_of_days")}
                     value={toUndefined(this.state.banExpireDays)}
                     onInput={linkEvent(this, this.handleModBanExpireDaysChange)}
@@ -629,12 +629,12 @@ export class Profile extends Component<any, ProfileState> {
                 {/* TODO hold off on expires until later */}
                 {/* <div class="form-group row"> */}
                 {/*   <label class="col-form-label">Expires</label> */}
-                {/*   <input type="date" class="form-control mr-2" placeholder={i18n.t('expires')} value={this.state.banExpires} onInput={linkEvent(this, this.handleModBanExpiresChange)} /> */}
+                {/*   <input type="date" class="form-control me-2" placeholder={i18n.t('expires')} value={this.state.banExpires} onInput={linkEvent(this, this.handleModBanExpiresChange)} /> */}
                 {/* </div> */}
                 <div class="form-group row">
                   <button
                     type="cancel"
-                    class="btn btn-secondary mr-2"
+                    class="btn btn-secondary me-2"
                     aria-label={i18n.t("cancel")}
                     onClick={linkEvent(this, this.handleModBanSubmitCancel)}
                   >
@@ -663,7 +663,7 @@ export class Profile extends Component<any, ProfileState> {
       .match({
         some: moderates => {
           if (moderates.length > 0) {
-            <div class="card border-secondary mb-3">
+            <div class="card mb-3">
               <div class="card-body">
                 <h5>{i18n.t("moderates")}</h5>
                 <ul class="list-unstyled mb-0">
@@ -687,7 +687,7 @@ export class Profile extends Component<any, ProfileState> {
       .match({
         some: follows => {
           if (follows.length > 0) {
-            <div class="card border-secondary mb-3">
+            <div class="card mb-3">
               <div class="card-body">
                 <h5>{i18n.t("subscribed")}</h5>
                 <ul class="list-unstyled mb-0">

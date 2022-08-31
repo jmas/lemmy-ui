@@ -374,7 +374,7 @@ export class Post extends Component<any, PostState> {
                   />
                   <div class="d-block d-md-none">
                     <button
-                      class="btn btn-secondary d-inline-block mb-2 mr-3"
+                      class="btn btn-secondary d-inline-block mb-2 me-3"
                       onClick={linkEvent(this, this.handleShowSidebarMobile)}
                     >
                       {i18n.t("sidebar")}{" "}
@@ -408,7 +408,7 @@ export class Post extends Component<any, PostState> {
   sortRadios() {
     return (
       <>
-        <div class="btn-group btn-group-toggle flex-wrap mr-3 mb-2">
+        <div class="btn-group btn-group-toggle flex-wrap me-3 mb-2">
           <label
             className={`btn btn-outline-secondary pointer ${
               CommentSortType[this.state.commentSort] === CommentSortType.Hot &&

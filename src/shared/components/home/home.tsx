@@ -70,7 +70,6 @@ import { CommentNodes } from "../comment/comment-nodes";
 import { DataTypeSelect } from "../common/data-type-select";
 import { HtmlTags } from "../common/html-tags";
 import { Icon, Spinner } from "../common/icon";
-import { ListingTypeSelect } from "../common/listing-type-select";
 import { Paginator } from "../common/paginator";
 import { SortSelect } from "../common/sort-select";
 import { CommunityLink } from "../community/community-link";
@@ -317,7 +316,7 @@ export class Home extends Component<any, HomeState> {
 
   render() {
     return (
-      <div class="container">
+      <div class="container-fluid" style={{ "--bs-gutter-x": 0 }}>
         <HtmlTags
           title={this.documentTitle}
           path={this.context.router.route.match.url}
@@ -325,12 +324,34 @@ export class Home extends Component<any, HomeState> {
           image={None}
         />
         {this.state.siteRes.site_view.isSome() && (
-          <div class="row">
-            <main role="main" class="col-12 col-md-8">
+          <div class="uj-layout-container">
+            <aside class="uj-column">
+              <div class="d-grid gap-2 col-12">
+                <button class="btn btn-link text-start bg-white" type="button">
+                  Популярне
+                </button>
+                <button class="btn btn-link text-start" type="button">
+                  Свіже
+                </button>
+                <button class="btn btn-link text-start" type="button">
+                  Моя стрічка
+                </button>
+                <button class="btn btn-link text-start" type="button">
+                  Збережені
+                </button>
+                <button class="btn btn-link text-start" type="button">
+                  Спільноти
+                </button>
+              </div>
+            </aside>
+
+            <main role="main" class="uj-column">
               <div class="d-block d-md-none">{this.mobileView()}</div>
-              {this.posts()}
+
+              <div class="uj-layout-posts">{this.posts()}</div>
             </main>
-            <aside class="d-none d-md-block col-md-4">{this.mySidebar()}</aside>
+
+            <aside class="uj-column">{this.mySidebar()}</aside>
           </div>
         )}
       </div>
@@ -351,7 +372,7 @@ export class Home extends Component<any, HomeState> {
         <div class="col-12">
           {this.hasFollows && (
             <button
-              class="btn btn-secondary d-inline-block mb-2 mr-3"
+              class="btn btn-secondary d-inline-block mb-2 me-3"
               onClick={linkEvent(this, this.handleShowSubscribedMobile)}
             >
               {i18n.t("subscribed")}{" "}
@@ -366,7 +387,7 @@ export class Home extends Component<any, HomeState> {
             </button>
           )}
           <button
-            class="btn btn-secondary d-inline-block mb-2 mr-3"
+            class="btn btn-secondary d-inline-block mb-2 me-3"
             onClick={linkEvent(this, this.handleShowTrendingMobile)}
           >
             {i18n.t("trending")}{" "}
@@ -378,7 +399,7 @@ export class Home extends Component<any, HomeState> {
             />
           </button>
           <button
-            class="btn btn-secondary d-inline-block mb-2 mr-3"
+            class="btn btn-secondary d-inline-block mb-2 me-3"
             onClick={linkEvent(this, this.handleShowSidebarMobile)}
           >
             {i18n.t("sidebar")}{" "}
@@ -403,12 +424,12 @@ export class Home extends Component<any, HomeState> {
               none: <></>,
             })}
           {this.state.showTrendingMobile && (
-            <div class="col-12 card border-secondary mb-3">
+            <div class="col-12 card mb-3">
               <div class="card-body">{this.trendingCommunities()}</div>
             </div>
           )}
           {this.state.showSubscribedMobile && (
-            <div class="col-12 card border-secondary mb-3">
+            <div class="col-12 card mb-3">
               <div class="card-body">{this.subscribedCommunities()}</div>
             </div>
           )}
@@ -423,7 +444,7 @@ export class Home extends Component<any, HomeState> {
       <div>
         {!this.state.loading && (
           <div>
-            <div class="card border-secondary mb-3">
+            <div class="card mb-3">
               <div class="card-body">
                 {this.trendingCommunities()}
                 {this.createCommunityButton()}
@@ -443,7 +464,7 @@ export class Home extends Component<any, HomeState> {
               none: <></>,
             })}
             {this.hasFollows && (
-              <div class="card border-secondary mb-3">
+              <div class="card mb-3">
                 <div class="card-body">{this.subscribedCommunities()}</div>
               </div>
             )}
@@ -594,21 +615,21 @@ export class Home extends Component<any, HomeState> {
 
     return (
       <div className="mb-3">
-        <span class="mr-3">
+        <span class="me-3">
           <DataTypeSelect
             type_={this.state.dataType}
             onChange={this.handleDataTypeChange}
           />
         </span>
-        <span class="mr-3">
+        {/* <span class="me-3">
           <ListingTypeSelect
             type_={this.state.listingType}
             showLocal={showLocal(this.isoData)}
             showSubscribed
             onChange={this.handleListingTypeChange}
           />
-        </span>
-        <span class="mr-2">
+        </span> */}
+        <span class="me-2">
           <SortSelect sort={this.state.sort} onChange={this.handleSortChange} />
         </span>
         {this.state.listingType == ListingType.All && (
