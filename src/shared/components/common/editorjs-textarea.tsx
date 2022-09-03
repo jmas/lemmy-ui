@@ -4,12 +4,12 @@ import EditorJS, { OutputData } from "@editorjs/editorjs";
 import Embed from "@editorjs/embed";
 import Header from "@editorjs/header";
 import ImageTool from "@editorjs/image";
-import Link from "@editorjs/link";
 import List from "@editorjs/list";
 import Quote from "@editorjs/quote";
 import Table from "@editorjs/table";
 import { None, Option, Some } from "@sniptt/monads";
 import autosize from "autosize";
+import LinkWithTarget from "editorjs-link-with-target";
 import { Component, linkEvent } from "inferno";
 import { Prompt } from "inferno-router";
 import { toOption, toUndefined } from "lemmy-js-client";
@@ -82,12 +82,14 @@ export class EditorJsTextArea extends Component<
       const editorJs = new EditorJS({
         data: this.state.content.unwrapOr({ blocks: [] }),
         autofocus: true,
+        placeholder: toUndefined(this.props.placeholder),
+        readOnly: this.props.disabled,
         tools: {
           code: Code,
           delimiter: Delimiter,
           embed: Embed,
           header: Header,
-          link: Link,
+          link: LinkWithTarget,
           list: List,
           quote: Quote,
           table: Table,
@@ -128,22 +130,12 @@ export class EditorJsTextArea extends Component<
         },
       });
 
-      // autosize(textarea);
       this.tribute.attach(textarea);
       textarea.addEventListener("tribute-replaced", () => {
         this.state.content = Some(textarea.value);
         this.setState(this.state);
         autosize.update(textarea);
       });
-
-      // this.quoteInsert();
-
-      // if (this.props.focus) {
-      //     textarea.focus();
-      // }
-
-      // TODO this is slow for some reason
-      // setupTippy();
     }
   }
 
@@ -183,7 +175,7 @@ export class EditorJsTextArea extends Component<
 
   render() {
     return (
-      <form id={this.formId} onSubmit={linkEvent(this, this.handleSubmit)}>
+      <form id={this.formId}>
         <Prompt
           when={
             !this.props.hideNavigationWarnings && this.state.content.isSome()
@@ -196,14 +188,6 @@ export class EditorJsTextArea extends Component<
               id={this.id}
               style={{ height: "auto" }}
               className={`form-control ${this.state.previewMode && "d-none"}`}
-              // value={toUndefined(this.state.content)}
-              // onInput={linkEvent(this, this.handleContentChange)}
-              // onPaste={linkEvent(this, this.handleImageUploadPaste)}
-              // required
-              // disabled={this.props.disabled}
-              // rows={2}
-              // maxLength={this.props.maxLength.unwrapOr(10000)}
-              // placeholder={toUndefined(this.props.placeholder)}
             />
             {this.state.previewMode &&
               this.state.content.match({
@@ -311,14 +295,6 @@ export class EditorJsTextArea extends Component<
     event.preventDefault();
     i.state.previewMode = !i.state.previewMode;
     i.setState(i.state);
-  }
-
-  handleSubmit(i: EditorJsTextArea, event: any) {
-    event.preventDefault();
-    i.state.loading = true;
-    i.setState(i.state);
-    let msg = { val: toUndefined(i.state.content), formId: i.formId };
-    i.props.onSubmit(msg);
   }
 
   handleReplyCancel(i: EditorJsTextArea) {
