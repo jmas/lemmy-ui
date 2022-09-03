@@ -1,6 +1,5 @@
 import { None, Option, Result, Some } from "@sniptt/monads";
 import { ClassConstructor, deserialize, serialize } from "class-transformer";
-import edjsHtml from "editorjs-html";
 import emojiShortName from "emoji-short-name";
 import {
   BlockCommunityResponse,
@@ -45,6 +44,7 @@ import { httpBase } from "./env";
 import { i18n, languages } from "./i18next";
 import { DataType, IsoData } from "./interfaces";
 import { UserService, WebSocketService } from "./services";
+import { EditorJsRenderer } from "./services/EditorJsRenderer";
 
 var Tribute: any;
 if (isBrowser()) {
@@ -77,7 +77,7 @@ export const commentTreeMaxDepth = 8;
 
 export const relTags = "noopener nofollow";
 
-const editorJsMarker = "__editor_type:editorjs:";
+const EDITOR_JS_MARKER = "__editor_type:editorjs:";
 
 const DEFAULT_ALPHABET =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -165,11 +165,11 @@ export function hotRank(score: number, timeStr: string): number {
 }
 
 export function hasEditorJsMarker(text: string) {
-  return text.startsWith(editorJsMarker);
+  return text.startsWith(EDITOR_JS_MARKER);
 }
 
 export function removeEditorJsMarker(text: string) {
-  return text.substring(editorJsMarker.length);
+  return text.substring(EDITOR_JS_MARKER.length);
 }
 
 export function postContentToHtml(text: string) {
@@ -181,14 +181,12 @@ export function postContentToHtml(text: string) {
 }
 
 export function editorJsToHtml(text: string) {
-  const edjsParser = edjsHtml({
-    delimiter: () => '<div class="delimiter">***</div>',
-  });
+  const renderer = new EditorJsRenderer();
 
   const postData = JSON.parse(text);
-  const html = postData.blocks ? edjsParser.parse(postData) : ["<div></div>"];
+  const html = renderer.renderToHtml(postData);
 
-  return { __html: html.join("") };
+  return { __html: html };
 }
 
 export function mdToHtml(text: string) {
