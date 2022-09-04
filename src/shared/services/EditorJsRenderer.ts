@@ -21,6 +21,15 @@ type EmbedBlock = OutputBlockData<
   }
 >;
 
+type QuoteBlock = OutputBlockData<
+  "quote",
+  {
+    text: string;
+    caption?: string;
+    alignment: "left" | "center";
+  }
+>;
+
 export class EditorJsRenderer {
   private edjsParser: any;
 
@@ -29,6 +38,7 @@ export class EditorJsRenderer {
       delimiter: this.renderDelimiter,
       table: this.renderTable,
       embed: this.renderEmbed,
+      quote: this.renderQuote,
     });
   }
 
@@ -89,6 +99,21 @@ export class EditorJsRenderer {
 
     return (
       `<figure class="figure ejs-embed-block">` + iframe + caption + `</figure>`
+    );
+  }
+
+  private renderQuote({ data }: QuoteBlock) {
+    const footer = data.caption
+      ? `<footer class="blockquote-footer">${data.caption}</footer>`
+      : "";
+
+    return (
+      `<blockquote class="blockquote ${
+        data.alignment === "center" && "text-center"
+      }">` +
+      `<p class="mb-0">${data.text}</p>` +
+      footer +
+      `</blockquote>`
     );
   }
 
