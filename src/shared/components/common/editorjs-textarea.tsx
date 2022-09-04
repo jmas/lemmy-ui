@@ -101,7 +101,13 @@ export class EditorJsTextArea extends Component<
           header: Header,
           link: LinkWithTarget,
           list: List,
-          quote: Quote,
+          quote: {
+            class: Quote,
+            config: {
+              quotePlaceholder: "Введіть цитату", // enter_quote
+              captionPlaceholder: "Введіть заголовок", // enter_caption
+            },
+          },
           table: Table,
           image: {
             class: ImageTool,
@@ -124,6 +130,82 @@ export class EditorJsTextArea extends Component<
                     return null;
                   }
                 },
+              },
+            },
+          },
+        },
+        i18n: {
+          messages: {
+            ui: {
+              blockTunes: {
+                toggler: {
+                  "Click to tune": "Натисніть для налаштування", // click_to_tune
+                },
+              },
+              inlineToolbar: {
+                converter: {
+                  "Convert to": "Конвертувати в", // convert_to
+                },
+              },
+              toolbar: {
+                toolbox: {
+                  Add: "Додати", // add
+                  Filter: "Фільтр", // filter
+                },
+              },
+            },
+            toolNames: {
+              Text: "Текст", // text
+              Code: i18n.t("code"),
+              Delimiter: "Розділювач", // delimiter
+              Embed: "Вбудовано", // embed
+              Heading: i18n.t("header"),
+              Link: i18n.t("link"),
+              List: i18n.t("list"),
+              Quote: i18n.t("quote"),
+              Table: "Таблиця", // table
+              Image: "Зображення", // image
+
+              Bold: i18n.t("bold"),
+              Italic: i18n.t("italic"),
+            },
+            tools: {
+              link: {
+                "Open in new window": "Відкрити в новому вікні", // open_in_new_window
+                Save: i18n.t("save"),
+                "Add a link": "Додати посилання", // add_link
+              },
+              embed: {
+                "Enter a caption": "Введіть заголовок", // enter_caption
+              },
+              quote: {
+                // not supported by plugin
+                // 'Left alignment': 'За лівим краєм',
+                // 'Center alignment': 'По центру',
+              },
+              table: {
+                "With headings": "Із заголовком", // with_header
+                "Without headings": "Без заголовку", // without_header
+              },
+              image: {
+                "With border": "З рамкою", // with_border
+                "Stretch image": "Розтягнути зображення", // stretch_image
+                "With background": "З фоном", // with_background
+              },
+              list: {
+                Unordered: "Маркерований", // unordered
+                Ordered: "Нумерований", // ordered
+              },
+            },
+            blockTunes: {
+              delete: {
+                Delete: i18n.t("remove"),
+              },
+              moveUp: {
+                "Move up": "Підняти", // move_up
+              },
+              moveDown: {
+                "Move down": "Опустити", // move_down
               },
             },
           },
