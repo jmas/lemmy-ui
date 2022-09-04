@@ -9,6 +9,18 @@ type TableBlock = OutputBlockData<
   }
 >;
 
+type EmbedBlock = OutputBlockData<
+  "embed",
+  {
+    service: "youtube" | "twitter" | "facebook" | "instagram";
+    source: string;
+    embed: string;
+    width: number;
+    height: number;
+    caption: string;
+  }
+>;
+
 export class EditorJsRenderer {
   private edjsParser: any;
 
@@ -16,6 +28,7 @@ export class EditorJsRenderer {
     this.edjsParser = edjsHtml({
       delimiter: this.renderDelimiter,
       table: this.renderTable,
+      embed: this.renderEmbed,
     });
   }
 
@@ -29,31 +42,57 @@ export class EditorJsRenderer {
   }
 
   private renderDelimiter() {
-    return '<div class="delimiter">***</div>';
+    return '<div class="ejs-delimiter-block">***</div>';
   }
 
   private renderTable(block: TableBlock) {
     const { withHeadings, content: rows } = block.data;
     let result = "";
 
-    result += "<table>";
+    result += "<table class='ejs-table-block'>";
     for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
       result += "<tr>";
+      const isHeaderRow = withHeadings && rowIndex === 0;
 
+      result += isHeaderRow ? "<thead>" : "";
       result += rows[rowIndex]
-        .map(col => {
-          if (withHeadings && rowIndex === 0) {
-            return `<th>${col}</th>`;
-          }
-
-          return `<td>${col}</td>`;
-        })
+        .map(col => (isHeaderRow ? `<th>${col}</th>` : `<td>${col}</td>`))
         .join("");
+      result += isHeaderRow ? "</thead>" : "";
 
       result += "</tr>";
     }
     result += "</table>";
 
     return result;
+  }
+
+  private renderEmbed(block: EmbedBlock) {
+    const embed = block.data;
+
+    const width = embed.width ? `width=${embed.width}` : "";
+    const height = embed.height ? `height=${embed.height}` : "";
+    const sizeFallback =
+      width && height
+        ? ""
+        : "width: 100%; min-height: 500px; max-height: 1000px;";
+
+    const iframe =
+      `<iframe ${width} ${height} src="${embed.embed}" ` +
+      `style="${sizeFallback}" ` +
+      `allowfullscreen frameborder="0" scrolling="no" allowtransparency="true" ` +
+      `allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+
+    const caption = embed.caption
+      ? `<figcaption class="figure-caption">${embed.caption}</figcaption>`
+      : "";
+
+    return (
+      `<figure class="figure ejs-embed-block">` + iframe + caption + `</figure>`
+    );
+  }
+
+  private renderDebug(block: any) {
+    return `<pre>${JSON.stringify(block, null, 2)}</pre>`;
   }
 }

@@ -87,7 +87,17 @@ export class EditorJsTextArea extends Component<
         tools: {
           code: Code,
           delimiter: Delimiter,
-          embed: Embed,
+          embed: {
+            class: Embed,
+            config: {
+              services: {
+                youtube: true,
+                twitter: true,
+                facebook: true,
+                instagram: true,
+              },
+            },
+          },
           header: Header,
           link: LinkWithTarget,
           list: List,

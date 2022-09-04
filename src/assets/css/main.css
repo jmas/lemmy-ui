@@ -74,10 +74,6 @@
 .md-div h5 {
   font-size: 1.2rem;
 }
-.md-div .delimiter {
-  text-align: center;
-  font-size: 2rem;
-}
 
 .md-div table {
   border-collapse: collapse;
@@ -430,4 +426,17 @@ br.big {
 .cdx-button:hover, .ce-inline-toolbar__dropdown:hover, .ce-inline-tool:hover {
   background-color: #439A86;
   color: inherit;
+}
+
+.ejs-delimiter-block {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.ejs-table-block {
+
+}
+
+.ejs-embed-block {
+  display: block;
 }
