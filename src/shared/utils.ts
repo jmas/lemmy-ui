@@ -1,3 +1,4 @@
+import { OutputData } from "@editorjs/editorjs";
 import { None, Option, Result, Some } from "@sniptt/monads";
 import { ClassConstructor, deserialize, serialize } from "class-transformer";
 import emojiShortName from "emoji-short-name";
@@ -44,6 +45,7 @@ import { httpBase } from "./env";
 import { i18n, languages } from "./i18next";
 import { DataType, IsoData } from "./interfaces";
 import { UserService, WebSocketService } from "./services";
+import { EditorJsRenderer } from "./services/EditorJsRenderer";
 
 var Tribute: any;
 if (isBrowser()) {
@@ -75,6 +77,8 @@ export const mentionDropdownFetchLimit = 10;
 export const commentTreeMaxDepth = 8;
 
 export const relTags = "noopener nofollow";
+
+export const EDITOR_JS_MARKER = "__editor_type:editorjs:";
 
 const DEFAULT_ALPHABET =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -159,6 +163,37 @@ export function hotRank(score: number, timeStr: string): number {
   // console.log(`Comment: ${comment.content}\nRank: ${rank}\nScore: ${comment.score}\nHours: ${hoursElapsed}`);
 
   return rank;
+}
+
+export function hasEditorJsMarker(text: string) {
+  return text.startsWith(EDITOR_JS_MARKER);
+}
+
+export function addEditorJsMarker(text: string | OutputData) {
+  return (
+    EDITOR_JS_MARKER + (typeof text === "string" ? text : JSON.stringify(text))
+  );
+}
+
+export function removeEditorJsMarker(text: string) {
+  return text.substring(EDITOR_JS_MARKER.length);
+}
+
+export function postContentToHtml(text: string) {
+  if (hasEditorJsMarker(text)) {
+    return editorJsToHtml(removeEditorJsMarker(text));
+  }
+
+  return mdToHtml(text);
+}
+
+export function editorJsToHtml(text: string) {
+  const renderer = new EditorJsRenderer();
+
+  const postData = JSON.parse(text);
+  const html = renderer.renderToHtml(postData);
+
+  return { __html: html };
 }
 
 export function mdToHtml(text: string) {
@@ -647,7 +682,7 @@ function notify(info: NotifyInfo, router: any) {
   // }
 }
 
-export function setupTribute() {
+export function setupTribute(useHtml = false) {
   return new Tribute({
     noMatchTemplate: function () {
       return "";
@@ -677,7 +712,13 @@ export function setupTribute() {
         trigger: "@",
         selectTemplate: (item: any) => {
           let it: PersonTribute = item.original;
-          return `[${it.key}](${it.view.person.actor_id})`;
+          return useHtml
+            ? `<a href="${
+                it.view.person.actor_id
+              }" target="_blank">${it.view.person.display_name.unwrapOr(
+                it.view.person.name
+              )}</a>`
+            : `[${it.key}](${it.view.person.actor_id})`;
         },
         values: debounce(async (text: string, cb: any) => {
           cb(await personSearch(text));
@@ -694,7 +735,9 @@ export function setupTribute() {
         trigger: "!",
         selectTemplate: (item: any) => {
           let it: CommunityTribute = item.original;
-          return `[${it.key}](${it.view.community.actor_id})`;
+          return useHtml
+            ? `<a href="${it.view.community.actor_id}" target="_blank">${it.view.community.title}</a>`
+            : `[${it.key}](${it.view.community.actor_id})`;
         },
         values: debounce(async (text: string, cb: any) => {
           cb(await communitySearch(text));

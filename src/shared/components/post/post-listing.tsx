@@ -40,8 +40,8 @@ import {
   isMod,
   isVideo,
   md,
-  mdToHtml,
   numToSI,
+  postContentToHtml,
   relTags,
   setupTippy,
   showScores,
@@ -182,7 +182,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           {this.state.viewSource ? (
             <pre>{body}</pre>
           ) : (
-            <div className="md-div" dangerouslySetInnerHTML={mdToHtml(body)} />
+            <div className="md-div" dangerouslySetInnerHTML={postContentToHtml(body)} />
           )}
         </div>
       ),
@@ -386,7 +386,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               <li className="list-inline-item">
                 <button
                   className="text-muted btn btn-sm btn-link p-0"
-                  data-tippy-content={md.render(body)}
+                  data-tippy-content={postContentToHtml(body).__html}
                   data-tippy-allowHtml={true}
                   onClick={linkEvent(this, this.handleShowBody)}
                 >
