@@ -1,21 +1,14 @@
-import Code from "@editorjs/code";
-import Delimiter from "@editorjs/delimiter";
-import EditorJS, { OutputData } from "@editorjs/editorjs";
-import Embed from "@editorjs/embed";
-import Header from "@editorjs/header";
-import ImageTool from "@editorjs/image";
-import List from "@editorjs/list";
-import Quote from "@editorjs/quote";
-import Table from "@editorjs/table";
+import { OutputData } from "@editorjs/editorjs";
 import { None, Option, Some } from "@sniptt/monads";
 import autosize from "autosize";
-import LinkWithTarget from "editorjs-link-with-target";
 import { Component, linkEvent } from "inferno";
 import { Prompt } from "inferno-router";
-import { toOption, toUndefined } from "lemmy-js-client";
+import { toOption } from "lemmy-js-client";
 import { pictrsUri } from "../../env";
 import { i18n } from "../../i18next";
+import { EditorJs } from "../../services/EditorJs";
 import {
+  addEditorJsMarker,
   editorJsToHtml,
   isBrowser,
   markdownHelpUrl,
@@ -58,7 +51,7 @@ export class EditorJsTextArea extends Component<
   private id = `comment-textarea-${randomStr()}`;
   private formId = `comment-form-${randomStr()}`;
   private tribute: any;
-  private editorJsInstance: any = null;
+  private editorJs: any = null;
   private emptyState: EditorJsTextAreaState = {
     content: this.props.initialContent,
     previewMode: false,
@@ -79,143 +72,13 @@ export class EditorJsTextArea extends Component<
   componentDidMount() {
     let textarea: any = document.getElementById(this.id);
     if (textarea && isBrowser()) {
-      const editorJs = new EditorJS({
-        data: this.state.content.unwrapOr({ blocks: [] }),
-        autofocus: true,
-        placeholder: toUndefined(this.props.placeholder),
-        readOnly: this.props.disabled,
-        tools: {
-          code: Code,
-          delimiter: Delimiter,
-          embed: {
-            class: Embed,
-            config: {
-              services: {
-                youtube: true,
-                twitter: true,
-                facebook: true,
-                instagram: true,
-              },
-            },
-          },
-          header: Header,
-          link: LinkWithTarget,
-          list: List,
-          quote: {
-            class: Quote,
-            config: {
-              quotePlaceholder: "Введіть цитату", // enter_quote
-              captionPlaceholder: "Введіть заголовок", // enter_caption
-            },
-          },
-          table: Table,
-          image: {
-            class: ImageTool,
-            config: {
-              uploader: {
-                uploadByFile: async file => {
-                  try {
-                    const url = await this.uploadImage(file);
-
-                    return {
-                      success: 1,
-                      file: {
-                        url,
-                      },
-                    };
-                  } catch (e) {
-                    console.error(e);
-                    toast(e, "danger");
-
-                    return null;
-                  }
-                },
-              },
-            },
-          },
-        },
-        i18n: {
-          messages: {
-            ui: {
-              blockTunes: {
-                toggler: {
-                  "Click to tune": "Натисніть для налаштування", // click_to_tune
-                },
-              },
-              inlineToolbar: {
-                converter: {
-                  "Convert to": "Конвертувати в", // convert_to
-                },
-              },
-              toolbar: {
-                toolbox: {
-                  Add: "Додати", // add
-                  Filter: "Фільтр", // filter
-                },
-              },
-            },
-            toolNames: {
-              Text: "Текст", // text
-              Code: i18n.t("code"),
-              Delimiter: "Розділювач", // delimiter
-              Embed: "Вбудовано", // embed
-              Heading: i18n.t("header"),
-              Link: i18n.t("link"),
-              List: i18n.t("list"),
-              Quote: i18n.t("quote"),
-              Table: "Таблиця", // table
-              Image: "Зображення", // image
-
-              Bold: i18n.t("bold"),
-              Italic: i18n.t("italic"),
-            },
-            tools: {
-              link: {
-                "Open in new window": "Відкрити в новому вікні", // open_in_new_window
-                Save: i18n.t("save"),
-                "Add a link": "Додати посилання", // add_link
-              },
-              embed: {
-                "Enter a caption": "Введіть заголовок", // enter_caption
-              },
-              quote: {
-                // not supported by plugin
-                // 'Left alignment': 'За лівим краєм',
-                // 'Center alignment': 'По центру',
-              },
-              table: {
-                "With headings": "Із заголовком", // with_header
-                "Without headings": "Без заголовку", // without_header
-              },
-              image: {
-                "With border": "З рамкою", // with_border
-                "Stretch image": "Розтягнути зображення", // stretch_image
-                "With background": "З фоном", // with_background
-              },
-              list: {
-                Unordered: "Маркерований", // unordered
-                Ordered: "Нумерований", // ordered
-              },
-            },
-            blockTunes: {
-              delete: {
-                Delete: i18n.t("remove"),
-              },
-              moveUp: {
-                "Move up": "Підняти", // move_up
-              },
-              moveDown: {
-                "Move down": "Опустити", // move_down
-              },
-            },
-          },
-        },
-        holder: this.id,
-        onReady: () => {
-          this.editorJsInstance = editorJs;
-        },
-        onChange: async () => {
-          let content = await this.editorJsInstance.saver.save();
+      this.editorJs = new EditorJs({
+        holderId: this.id,
+        content: this.state.content,
+        disabled: this.props.disabled,
+        placeholder: this.props.placeholder,
+        onImageUpload: this.uploadImage,
+        onChange: async content => {
           this.state.content = toOption(content);
           this.contentChange();
           this.setState(this.state);
@@ -258,16 +121,16 @@ export class EditorJsTextArea extends Component<
   }
 
   componentWillUnmount() {
-    if (this.editorJsInstance) {
-      this.editorJsInstance.destroy();
-      this.editorJsInstance = null;
+    if (this.editorJs) {
+      this.editorJs.destroy();
+      this.editorJs = null;
     }
     window.onbeforeunload = null;
   }
 
   render() {
     return (
-      <form id={this.formId}>
+      <form id={this.formId} onSubmit={linkEvent(this, this.handleSubmit)}>
         <Prompt
           when={
             !this.props.hideNavigationWarnings && this.state.content.isSome()
@@ -318,6 +181,7 @@ export class EditorJsTextArea extends Component<
               ),
               none: <></>,
             })}
+
             {this.props.replyType && (
               <button
                 type="button"
@@ -327,6 +191,7 @@ export class EditorJsTextArea extends Component<
                 {i18n.t("cancel")}
               </button>
             )}
+
             {this.state.content.isSome() && (
               <button
                 className={`btn btn-sm btn-secondary mr-2 ${
@@ -337,6 +202,7 @@ export class EditorJsTextArea extends Component<
                 {i18n.t("preview")}
               </button>
             )}
+
             <a
               href={markdownHelpUrl}
               class="btn btn-sm text-muted font-weight-bold"
@@ -376,9 +242,7 @@ export class EditorJsTextArea extends Component<
   contentChange() {
     if (this.props.onContentChange) {
       this.props.onContentChange(
-        `__editor_type:editorjs:${JSON.stringify(
-          this.state.content.unwrapOr({ blocks: [] })
-        )}`
+        addEditorJsMarker(this.state.content.unwrapOr({ blocks: [] }))
       );
     }
   }
@@ -387,6 +251,19 @@ export class EditorJsTextArea extends Component<
     event.preventDefault();
     i.state.previewMode = !i.state.previewMode;
     i.setState(i.state);
+  }
+
+  handleSubmit(i: EditorJsTextArea, event: any) {
+    event.preventDefault();
+    i.state.loading = true;
+    i.setState(i.state);
+
+    let msg = {
+      val: addEditorJsMarker(i.state.content.unwrapOr({ blocks: [] })),
+      formId: i.formId,
+    };
+
+    i.props.onSubmit(msg);
   }
 
   handleReplyCancel(i: EditorJsTextArea) {

@@ -92,6 +92,7 @@ export class EditorJsRenderer {
     );
   }
 
+  // @ts-ignore
   private renderDebug(block: any) {
     return `<pre>${JSON.stringify(block, null, 2)}</pre>`;
   }

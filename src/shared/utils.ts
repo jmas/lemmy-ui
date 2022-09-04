@@ -1,3 +1,4 @@
+import { OutputData } from "@editorjs/editorjs";
 import { None, Option, Result, Some } from "@sniptt/monads";
 import { ClassConstructor, deserialize, serialize } from "class-transformer";
 import emojiShortName from "emoji-short-name";
@@ -77,7 +78,7 @@ export const commentTreeMaxDepth = 8;
 
 export const relTags = "noopener nofollow";
 
-const EDITOR_JS_MARKER = "__editor_type:editorjs:";
+export const EDITOR_JS_MARKER = "__editor_type:editorjs:";
 
 const DEFAULT_ALPHABET =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -166,6 +167,12 @@ export function hotRank(score: number, timeStr: string): number {
 
 export function hasEditorJsMarker(text: string) {
   return text.startsWith(EDITOR_JS_MARKER);
+}
+
+export function addEditorJsMarker(text: string | OutputData) {
+  return (
+    EDITOR_JS_MARKER + (typeof text === "string" ? text : JSON.stringify(text))
+  );
 }
 
 export function removeEditorJsMarker(text: string) {
