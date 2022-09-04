@@ -132,11 +132,14 @@ export class EditorJs {
             table: {
               "With headings": "Із заголовком", // with_header
               "Without headings": "Без заголовку", // without_header
+              Heading: i18n.t("header"),
             },
             image: {
               "With border": "З рамкою", // with_border
               "Stretch image": "Розтягнути зображення", // stretch_image
               "With background": "З фоном", // with_background
+              Caption: "Введіть заголовок", // enter_caption
+              "Select an Image": i18n.t("upload_image"),
             },
             list: {
               Unordered: "Маркерований", // unordered
